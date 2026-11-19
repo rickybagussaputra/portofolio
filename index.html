@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portofolio Ricky Bagus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  /* Ruang kontrol siaran yang hidup: grafit, tally merah (PGM/live), tally hijau (PVW), biru klip video ala NLE.
+     Layout: hero switcher interaktif -> bento angka -> timeline edit karya -> studi kasus -> galeri geser -> pengalaman -> marquee alat -> kontak. */
+  --bg:#141210;
+  --panel:#1f1c19;
+  --panel-2:#292420;
+  --line:#37312c;
+  --ink:#f3f1f0;
+  --muted:#9f9893;
+  --pgm:#ff4b36;
+  --pvw:#34d483;
+  --clip:#53e7d8;
+  --display:"Poppins",system-ui,sans-serif;
+  --body:"Poppins",system-ui,sans-serif;
+  --mono:"Poppins",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--pvw);outline-offset:3px;border-radius:4px}
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);line-height:.98;text-wrap:balance;margin:0;letter-spacing:-.02em}
+h2{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:800}
+h3{font-size:1.3rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+.muted{color:var(--muted)}
+section{padding:96px 0}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:14px 40px;margin-bottom:36px}
+.sec-head p{max-width:46ch}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* nav pill */
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:6px;padding:6px 6px 6px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(26,23,20,.94);max-width:calc(100% - 24px)}
+.nav .tc{font:500 .8rem var(--mono);color:var(--muted);display:flex;align-items:center;gap:8px;padding-right:6px;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--pgm);}
+@keyframes blink{50%{opacity:.25}}
+.nav a{text-decoration:none;font-size:.9rem;padding:7px 13px;border-radius:999px;color:var(--muted);white-space:nowrap}
+.nav a:hover{color:var(--ink);background:var(--panel-2)}
+.nav a.hire{background:var(--ink);color:var(--bg);font-weight:600}
+.nav a.opt{display:inline-flex;align-items:center;gap:7px}
+.nav a.opt::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .2s}
+.nav a.opt.on{color:var(--ink)}
+.nav a.opt.on::before{background:var(--pgm);box-shadow:0 0 8px var(--pgm)}
+.track-name button{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;font:500 .75rem var(--mono);color:var(--ink)}
+.track-name button[aria-pressed="false"]{color:var(--muted);text-decoration:line-through}
+.track.off .clip{opacity:.18;pointer-events:none}
+@media (max-width:620px){.nav a.opt{display:none}}
+
+
+/* ===== diorama studio (ala The Sims) ===== */
+
+.studio{position:relative;height:100vh;height:100svh;padding:0;scroll-snap-align:start}
+.stage{position:relative;height:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,#322820,#181310)}
+.dio{position:absolute;inset:0;width:100%;height:100%}
+.veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(24,19,16,.92) 0%,rgba(24,19,16,.6) 38%,rgba(24,19,16,0) 62%);transition:opacity .5s}
+.worker{opacity:0;transition:opacity .35s}
+.worker.on{opacity:1}
+.worker:not(.on) *{animation-play-state:paused!important}
+.studio.paused *{animation-play-state:paused!important}
+.wk{display:none}.wk.on{display:inline}
+@keyframes stepA{0%{transform:translate(0,0)}100%{transform:translate(var(--lx),var(--ly))}}
+@keyframes stepB{0%{transform:translate(var(--lx),var(--ly))}100%{transform:translate(0,0)}}
+.walking .leg0,.walking .arm1{animation:stepA .32s ease-in-out infinite alternate}
+.walking .leg1,.walking .arm0{animation:stepB .32s ease-in-out infinite alternate}
+.dots{position:absolute;left:50%;bottom:76px;transform:translateX(-50%);display:flex;gap:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:#514841;transition:background .3s,width .3s}
+.dots i.on{background:var(--ink);width:18px;border-radius:3px}
+/* animasi ilustrasi isometrik */
+@keyframes mv{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--dx),var(--dy))}}
+.mv{animation:mv var(--t,3s) ease-in-out var(--dl,0s) infinite}
+@keyframes pulse{0%,100%{opacity:.75}50%{opacity:1}}
+.pulse{animation:pulse 4s ease-in-out infinite}
+@keyframes ph{0%{transform:translateX(0)}100%{transform:translateX(78px)}}
+.ph{animation:ph 6s linear infinite}
+@keyframes wave2{0%{transform:translateX(0)}100%{transform:translateX(-120px)}}
+.wave{animation:wave2 10s linear infinite}
+@keyframes keyp{0%,55%,100%{fill:#3d3631}62%,85%{fill:#ff4b36}}
+.key-a{animation:keyp 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
+.ta{animation:bob 1.6s ease-in-out infinite}.tb{animation:bob 1.9s ease-in-out .8s infinite}
+@keyframes onair{0%,100%{opacity:1}50%{opacity:.7}}
+.onair-box{animation:onair 2.6s ease-in-out infinite}
+.onair-glow{animation:pulse 2.6s ease-in-out infinite}
+@keyframes blinkSoft{0%,100%{opacity:1}50%{opacity:.25}}
+.rec{animation:blinkSoft 2.4s ease-in-out infinite}
+@keyframes swapA{0%,45%{opacity:1}50%,95%{opacity:0}100%{opacity:1}}
+@keyframes swapB{0%,45%{opacity:0}50%,95%{opacity:1}100%{opacity:0}}
+.pgm-a{animation:swapA 8s steps(1) infinite}.pgm-b{animation:swapB 8s steps(1) infinite}
+@keyframes meter{0%,100%{transform:scaleY(.55)}50%{transform:scaleY(1)}}
+.m1,.m2,.m3{transform-box:fill-box;transform-origin:50% 100%;animation:meter 1.6s ease-in-out infinite}.m2{animation-delay:.4s}.m3{animation-delay:.8s}
+@keyframes fader{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.fd{animation:fader 3.2s ease-in-out infinite}.fd1{animation-delay:.8s}.fd2{animation-delay:1.6s}.fd3{animation-delay:2.4s}
+.intro-cap{position:absolute;left:0;right:0;top:15vh;text-align:center;padding:0 20px;pointer-events:none}
+.intro-cap h1{font-size:clamp(3rem,9vw,7rem);font-weight:800;letter-spacing:-.04em;line-height:.92}
+.intro-cap p{margin-top:14px;font-size:clamp(1rem,2vw,1.25rem);color:#dad7d4}
+.roles{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px 0;margin-top:16px;font-size:1rem;font-weight:500;color:#e9e2da}
+.roles span{padding:0 14px;border-left:2px solid var(--line)}
+.roles span:first-child{border-left:0}
+.hint{display:block;margin-top:22px;font-size:.85rem;color:var(--muted)}
+.desk-card{position:absolute;top:50%;right:4vw;width:min(440px,40vw);transform:translateY(-50%);background:rgba(27,23,20,.96);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.desk-card.show{opacity:1;visibility:visible}
+.desk-card .step{font-size:.85rem;color:var(--muted)}
+.desk-card h2{font-size:clamp(1.9rem,3.4vw,2.6rem)}
+.desk-card p{color:#dad7d4;font-size:.98rem}
+.work-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.work-list a{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);text-decoration:none;font-size:.9rem;font-weight:500}
+.work-list a:hover{border-color:var(--muted)}
+.work-list a span:last-child{font-family:var(--mono);color:var(--muted);white-space:nowrap}
+.tags{display:flex;flex-wrap:wrap;gap:2px 0;font-size:.82rem;color:var(--muted)}
+.tags::before{content:"Alat:";margin-right:8px;color:#a59a8f}
+.tags span:not(:last-child)::after{content:",";margin-right:6px}
+.card-cta{display:flex;flex-wrap:wrap;gap:8px}
+.strips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.strip{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 8px;border-radius:12px;background:var(--panel-2);border:1px solid var(--line)}
+.strip .fader{position:relative;width:8px;height:70px;border-radius:4px;background:#110f0d}
+.strip .fader i{position:absolute;left:50%;width:28px;height:12px;margin-left:-14px;border-radius:3px;background:#dad7d4;transition:bottom .3s}
+.strip b{font:600 .72rem var(--mono);letter-spacing:.04em}
+.solo{font:700 .72rem var(--mono);padding:6px 10px;border-radius:6px;border:1px solid #4d453f;background:#28231f;color:var(--muted);cursor:pointer}
+.solo[aria-pressed="true"]{background:#f5c542;border-color:#f5c542;color:#2a1a00}
+.solo-out{min-height:72px;padding:12px 14px;border-radius:10px;border:1px dashed var(--line);font-size:.92rem;color:#dad7d4}
+.solo-out strong{display:block;color:var(--ink);margin-bottom:2px}
+.desk-nav{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:4px;padding:5px;border-radius:999px;border:1px solid var(--line);background:rgba(20,18,16,.95)}
+.desk-nav button{border:0;background:transparent;color:var(--muted);font-size:.85rem;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.desk-nav button[aria-current="true"]{background:var(--ink);color:var(--bg);font-weight:600}
+@media (max-width:900px){
+  .desk-card{top:auto;bottom:74px;left:12px;right:12px;width:auto;transform:none;max-height:56vh;overflow-y:auto;padding:20px}
+  .intro-cap{top:12vh}
+  .desk-nav button{padding:8px 10px;font-size:.8rem}
+}
+/* tanpa animasi: tampil bertumpuk */
+
+/* angka singkat */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
+.kpi{padding:22px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--line)}
+.kpi:first-child{border-left:0}
+.kpi .k{font-size:.85rem;color:var(--muted)}
+.kpi .n{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1;letter-spacing:-.02em}
+.kpi .sub{font-size:.82rem;color:var(--muted)}
+@media (max-width:720px){.kpis{grid-template-columns:1fr 1fr}.kpi:nth-child(3){border-left:0}.kpi:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* alat per peran */
+.toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.toolgrid > div{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+.toolgrid ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.toolgrid li{font-size:.92rem;color:#d9d1c8;padding-left:14px;position:relative}
+.toolgrid li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--muted)}
+@media (max-width:860px){.toolgrid{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.toolgrid{grid-template-columns:1fr}}
+
+/* NLE timeline */
+.nle{border:1px solid var(--line);border-radius:18px;background:var(--panel);overflow:hidden}
+.viewer{display:grid;grid-template-columns:1.1fr 1fr;gap:0;border-bottom:1px solid var(--line)}
+@media (max-width:820px){.viewer{grid-template-columns:1fr}}
+.v-screen{position:relative;aspect-ratio:16/9;background:#090706;overflow:hidden}
+.v-screen canvas{width:100%;height:100%;display:block}
+.v-screen .v-title{position:absolute;inset:auto 18px 18px 18px;font-family:var(--display);font-weight:800;font-size:clamp(1.3rem,2.6vw,2rem);line-height:1.02;letter-spacing:-.02em;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+.v-info{padding:26px;display:flex;flex-direction:column;gap:18px;justify-content:space-between}
+.v-info dl{display:grid;grid-template-columns:110px 1fr;gap:10px 16px;margin:0;font-size:.95rem}
+.v-info dt{color:var(--muted)}
+.v-info dd{margin:0;font-weight:500}
+.v-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:600;text-decoration:none;font-size:.95rem;border:1px solid var(--line);background:transparent;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.sq{width:44px;padding:11px 0}
+.btn:hover{border-color:var(--muted)}
+.tracks{position:relative;overflow-x:auto;scrollbar-width:thin;padding:0 0 12px}
+.tracks-inner{position:relative;min-width:max-content;padding:0 16px}
+.ruler{height:28px;display:flex;align-items:end;font:500 .7rem var(--mono);color:var(--muted);border-bottom:1px solid var(--line);margin-bottom:10px;padding-left:64px;gap:0}
+.track{display:flex;align-items:center;gap:6px;height:58px;margin-bottom:8px}
+.track-name{width:58px;flex:none;font:500 .75rem var(--mono);color:var(--muted);position:sticky;left:0;background:var(--panel);z-index:2;height:100%;display:flex;align-items:center}
+.clip{flex:none;height:100%;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,color-mix(in srgb,var(--clip) 85%,#ffffff 0%),color-mix(in srgb,var(--clip) 70%,#000000));color:#ffffff;text-align:left;padding:6px 10px;cursor:pointer;overflow:hidden;position:relative;transition:transform .12s,box-shadow .12s}
+.clip.live{background:linear-gradient(180deg,var(--pgm),color-mix(in srgb,var(--pgm) 65%,#000000))}
+.clip .ct{display:block;font-size:.78rem;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clip .cm{display:block;font:500 .66rem var(--mono);opacity:.8;margin-top:3px}
+.clip::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;opacity:.35;background:repeating-linear-gradient(90deg,#ffffff 0 1px,transparent 1px 3px);mask:linear-gradient(transparent,#000000)}
+.clip:hover{transform:translateY(-2px)}
+.clip[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+.playhead{position:absolute;top:0;bottom:12px;width:2px;background:var(--ink);left:0;pointer-events:none;transition:left .35s cubic-bezier(.2,.8,.2,1);z-index:3}
+.playhead::before{content:"";position:absolute;top:0;left:-6px;border:7px solid transparent;border-top:9px solid var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;padding:12px 18px;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+
+/* case */
+.case{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:860px){.case{grid-template-columns:1fr}}
+.case .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px}
+.case .card p+p{margin-top:12px}
+.facts{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px}
+.facts li{display:grid;grid-template-columns:90px 1fr;gap:12px;font-size:.95rem}
+.facts span:first-child{color:var(--muted)}
+.drop{border:1.5px dashed var(--line);border-radius:18px;min-height:280px;display:grid;place-content:center;text-align:center;gap:8px;padding:24px;background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:18px 18px}
+.drop strong{font-family:var(--display);font-size:1.5rem}
+
+/* gallery */
+.gallery{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 20px 16px;cursor:grab;scrollbar-width:none}
+.gallery::-webkit-scrollbar{display:none}
+.gallery.drag{cursor:grabbing;scroll-snap-type:none}
+.shot{flex:none;width:clamp(240px,32vw,380px);aspect-ratio:4/5;border-radius:18px;border:1.5px dashed var(--line);scroll-snap-align:start;display:flex;flex-direction:column;justify-content:end;padding:18px;gap:4px;background:linear-gradient(160deg,var(--panel-2),var(--panel));user-select:none}
+.shot:nth-child(3n+2){aspect-ratio:4/3;align-self:center}
+.shot strong{font-family:var(--display);font-size:1.15rem}
+.shot span{font-size:.85rem;color:var(--muted)}
+.gal-head{width:min(1180px,100% - 40px);margin:0 auto 24px}
+
+/* experience */
+.exp{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px}
+@media (max-width:860px){.exp{grid-template-columns:1fr}}
+.exp .stick{position:sticky;top:100px;align-self:start}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{padding:26px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:130px 1fr;gap:6px 24px}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.when{font:500 .82rem var(--mono);color:var(--muted);padding-top:5px}
+.steps p{margin-top:8px;color:var(--muted);max-width:56ch}
+.now{display:inline-flex;align-items:center;gap:6px;margin-left:10px;font:600 .72rem var(--body);color:#ff9a8c;vertical-align:middle}
+.now::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--pgm)}
+@media (max-width:620px){.steps li{grid-template-columns:1fr}}
+
+/* marquee */
+.marquee{border-block:1px solid var(--line);padding:28px 20px}
+.mq-track{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;width:auto}
+.marquee:hover .mq-track{animation-play-state:paused}
+.mq-track span{font-family:var(--display);font-weight:700;font-size:clamp(1.15rem,2.4vw,1.6rem);white-space:nowrap;display:flex;align-items:center;gap:28px;color:var(--muted)}
+.mq-track span::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--line)}
+.mq-track span.hl{color:var(--ink)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* contact */
+.contact{text-align:left}
+.contact h2{font-size:clamp(2.8rem,9vw,7rem);letter-spacing:-.04em;line-height:.9}
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:40px}
+@media (max-width:760px){.contact-grid{grid-template-columns:1fr}}
+.c-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.c-card .k{font-size:.85rem;color:var(--muted)}
+.c-card .v{font-weight:600;word-break:break-word}
+.c-card .todo{color:var(--muted);font-weight:400;font-style:italic}
+.c-row{display:flex;gap:8px;flex-wrap:wrap}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;font-size:.9rem;transition:.25s;z-index:30;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{padding:32px 0 48px;color:var(--muted);font-size:.85rem}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .mq-track,.dot{animation:none}
+  .playhead,.clip,.src{transition:none}
+}
+
+
+/* ===== tombol & link yang bisa diklik: aksen amber ===== */
+:root{--act:#ffb547;--act-ink:#1a1206}
+.btn{border-color:var(--act);color:var(--act);transition:background .15s,color .15s,transform .08s}
+.btn:hover{background:color-mix(in srgb,var(--act) 14%,transparent);border-color:var(--act)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--act);color:var(--act-ink);border-color:var(--act)}
+.btn.primary:hover{background:#ffc66e;color:var(--act-ink)}
+.btn.primary::after,.work-list a[target]::after{content:"";display:inline-block;width:.95em;height:.95em;margin-left:4px;vertical-align:-.12em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M7%2017L17%207M9%207h8v8%27/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M7%2017L17%207M9%207h8v8%27/%3E%3C/svg%3E") center/contain no-repeat}
+.work-list a{border-color:color-mix(in srgb,var(--act) 45%,var(--line));background:color-mix(in srgb,var(--act) 7%,var(--panel-2));transition:background .15s,border-color .15s}
+.work-list a:hover{border-color:var(--act);background:color-mix(in srgb,var(--act) 16%,var(--panel-2))}
+.work-list a span:first-child{color:var(--ink)}
+.work-list a span:last-child{color:var(--act)}
+.rd-link,.oa-list a{color:var(--act)!important;border-color:var(--act)!important}
+.clip{cursor:pointer}
+main a:not(.btn):not(.rd-link):not([class]){color:var(--act);text-decoration-color:color-mix(in srgb,var(--act) 60%,transparent);text-underline-offset:3px}
+.solo{border-color:var(--act);color:var(--act)}
+.desk-nav button:not([aria-current="true"]):hover{color:var(--act)}
+.nav a.hire{background:var(--act);color:var(--act-ink)}
+
+.badge,.oa-chips span,.chip{border:0!important;background:none!important;padding:0!important;border-radius:0!important}
+
+/* warna khas per keahlian (bukan tombol) */
+:root{--c1:#5fd4ff;--c2:#c3a3ff;--c3:#ff6a57;--c4:#6fe0a0}
+.roles span{font-weight:600}
+.roles .r1{color:var(--c1)}.roles .r2{color:var(--c2)}.roles .r3{color:var(--c3)}.roles .r4{color:var(--c4)}
+.desk-card[data-i="1"]{--rc:var(--c1)}.desk-card[data-i="2"]{--rc:var(--c2)}.desk-card[data-i="3"]{--rc:var(--c3)}.desk-card[data-i="4"]{--rc:var(--c4)}
+.desk-card h2{color:var(--rc)}
+.desk-card{border-top:3px solid var(--rc)}
+.desk-card .step{color:color-mix(in srgb,var(--rc) 70%,var(--muted))}
+
+/* link "selengkapnya" per profesi */
+.more-row{margin-top:2px}
+.more-row .btn{width:100%}
+.more-row .btn::after{content:none!important}
+.ico-r{display:inline-block;width:1em;height:1em;margin-left:6px;vertical-align:-.15em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M5%2012h14M13%206l6%206-6%206%27/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M5%2012h14M13%206l6%206-6%206%27/%3E%3C/svg%3E") center/contain no-repeat}
+.more-row .soon{display:block;font-size:.85rem;color:var(--muted);padding-top:4px;border-top:1px dashed var(--line);padding-top:12px}
+
+::selection{background:#ffb547;color:#1a1206}
+html{scrollbar-color:#4a4037 #141210;caret-color:#ffb547}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:#141210}::-webkit-scrollbar-thumb{background:#4a4037;border-radius:6px;border:2px solid #141210}
+a{text-underline-offset:3px}
+.ico-l{display:inline-block;width:1em;height:1em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M19%2012H5M11%206l-6%206%206%206%27/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M19%2012H5M11%206l-6%206%206%206%27/%3E%3C/svg%3E") center/contain no-repeat}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Navigasi utama">
+  <span class="tc"><span class="dot"></span>Ricky Bagus</span>
+  <a class="opt" href="#top">Studio</a>
+  <a class="opt" href="#karya">Karya</a>
+  <a class="opt" href="#pengalaman">Pengalaman</a>
+  <a class="hire" href="#kontak">Kontak</a>
+</nav>
+
+<main>
+  <!-- STUDIO: 4 meja -->
+  <section class="studio" id="top" aria-label="Studio, empat keahlian">
+    <div class="stage">
+      <svg class="dio" id="dio" viewBox="0 0 1400 1100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><filter id="blur6" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter></defs><defs>
+<radialGradient id="gShirt" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#3cb3a5"/><stop offset=".6" stop-color="#1f8478"/><stop offset="1" stop-color="#14564f"/></radialGradient>
+<radialGradient id="gTal" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#c76a7d"/><stop offset=".6" stop-color="#9b4a5c"/><stop offset="1" stop-color="#6a2f3c"/></radialGradient>
+<radialGradient id="gGuest" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#9fae5c"/><stop offset=".6" stop-color="#6f7d38"/><stop offset="1" stop-color="#4a5424"/></radialGradient>
+<radialGradient id="gBlack" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="#504e4c"/><stop offset=".55" stop-color="#232120"/><stop offset="1" stop-color="#0e0d0d"/></radialGradient>
+<linearGradient id="gCap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f3d3b"/><stop offset="1" stop-color="#141313"/></linearGradient>
+<radialGradient id="gSkin" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#f6cfa9"/><stop offset=".7" stop-color="#e2a87e"/><stop offset="1" stop-color="#bf8460"/></radialGradient>
+<radialGradient id="gHair" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#4a362a"/><stop offset="1" stop-color="#1c130e"/></radialGradient>
+<linearGradient id="gBean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7c25a"/><stop offset="1" stop-color="#d9962c"/></linearGradient>
+<radialGradient id="gShadow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#000000" stop-opacity=".45"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></radialGradient>
+</defs>
+<g id="scene"><g ><polygon points="7.2,680.0 700.0,1080.0 700.0,1062.0 7.2,662.0" fill="#302924" stroke="#302924" stroke-width="10.1" stroke-linejoin="round"/><polygon points="1392.8,680.0 700.0,1080.0 700.0,1062.0 1392.8,662.0" fill="#251f1b" stroke="#251f1b" stroke-width="10.1" stroke-linejoin="round"/><polygon points="700.0,262.0 1392.8,662.0 700.0,1062.0 7.2,662.0" fill="#413831" stroke="#413831" stroke-width="10.1" stroke-linejoin="round"/><polyline points="7.2,662.0 700.0,1062.0 1392.8,662.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,700.0,261.7)"><rect width="400" height="400" fill="#403730"/><rect x="400" width="400" height="400" fill="#3d352e"/><rect y="400" width="400" height="400" fill="#423933"/><rect x="400" y="400" width="400" height="400" fill="#3c342d"/><rect x="0" y="0" width="800" height="800" fill="none" stroke="#4b4139" stroke-width="2"/></g>
+<polygon points="700.0,262.0 1392.8,662.0 1392.8,422.0 700.0,22.0" fill="#382d25" />
+<polygon points="700.0,262.0 7.2,662.0 7.2,422.0 700.0,22.0" fill="#322820" />
+<polygon points="700.0,262.0 1392.8,662.0 1392.8,654.0 700.0,254.0" fill="#261f19" />
+<polygon points="700.0,262.0 7.2,662.0 7.2,654.0 700.0,254.0" fill="#231c17" />
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,59.1,661.4)"><text x="0" y="0" font-family="Poppins, sans-serif" font-weight="600" font-size="22" fill="#695d53">KAMERA</text></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,405.6,461.4)"><text x="0" y="0" font-family="Poppins, sans-serif" font-weight="600" font-size="22" fill="#695d53">EDIT</text></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,752.0,661.4)"><text x="0" y="0" font-family="Poppins, sans-serif" font-weight="600" font-size="22" fill="#695d53">LIVE</text></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,405.6,861.4)"><text x="0" y="0" font-family="Poppins, sans-serif" font-weight="600" font-size="22" fill="#695d53">AUDIO</text></g><g ><polygon points="504.3,229.0 523.3,240.0 523.3,234.0 504.3,223.0" fill="#403730" stroke="#403730" stroke-width="3.4" stroke-linejoin="round"/><polygon points="644.6,170.0 523.3,240.0 523.3,234.0 644.6,164.0" fill="#2d2723" stroke="#2d2723" stroke-width="3.4" stroke-linejoin="round"/><polygon points="625.5,153.0 644.6,164.0 523.3,234.0 504.3,223.0" fill="#5a524c" stroke="#5a524c" stroke-width="3.4" stroke-linejoin="round"/><polyline points="504.3,223.0 523.3,234.0 644.6,164.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="597.8,173.0 611.7,181.0 611.7,151.0 597.8,143.0" fill="#514841" stroke="#514841" stroke-width="9.0" stroke-linejoin="round"/><polygon points="634.2,168.0 611.7,181.0 611.7,151.0 634.2,138.0" fill="#3a332e" stroke="#3a332e" stroke-width="9.0" stroke-linejoin="round"/><polygon points="620.3,130.0 634.2,138.0 611.7,151.0 597.8,143.0" fill="#69615b" stroke="#69615b" stroke-width="9.0" stroke-linejoin="round"/><polyline points="597.8,143.0 611.7,151.0 634.2,138.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="570.1,189.0 584.0,197.0 584.0,175.0 570.1,167.0" fill="#53e7d8" stroke="#53e7d8" stroke-width="9.0" stroke-linejoin="round"/><polygon points="599.5,188.0 584.0,197.0 584.0,175.0 599.5,166.0" fill="#9a765b" stroke="#9a765b" stroke-width="9.0" stroke-linejoin="round"/><polygon points="585.7,158.0 599.5,166.0 584.0,175.0 570.1,167.0" fill="#65e9db" stroke="#65e9db" stroke-width="9.0" stroke-linejoin="round"/><polyline points="570.1,167.0 584.0,175.0 599.5,166.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="525.1,215.0 538.9,223.0 538.9,187.0 525.1,179.0" fill="#3f3934" stroke="#3f3934" stroke-width="9.0" stroke-linejoin="round"/><polygon points="573.6,203.0 538.9,223.0 538.9,187.0 573.6,167.0" fill="#2d2824" stroke="#2d2824" stroke-width="9.0" stroke-linejoin="round"/><polygon points="559.7,159.0 573.6,167.0 538.9,187.0 525.1,179.0" fill="#5a5450" stroke="#5a5450" stroke-width="9.0" stroke-linejoin="round"/><polyline points="525.1,179.0 538.9,187.0 573.6,167.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,0,1.0000,765.7,94.1)"><ellipse cx="120" cy="80" rx="150" ry="80" fill="#63eee0" opacity=".1"/></g>
+<g ><polygon points="741.6,322.0 746.8,325.0 746.8,253.0 741.6,250.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="752.0,322.0 746.8,325.0 746.8,253.0 752.0,250.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="746.8,247.0 752.0,250.0 746.8,253.0 741.6,250.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="741.6,250.0 746.8,253.0 752.0,250.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="937.3,435.0 942.5,438.0 942.5,366.0 937.3,363.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="947.7,435.0 942.5,438.0 942.5,366.0 947.7,363.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="942.5,360.0 947.7,363.0 942.5,366.0 937.3,363.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="937.3,363.0 942.5,366.0 947.7,363.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="686.1,354.0 691.3,357.0 691.3,285.0 686.1,282.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="696.5,354.0 691.3,357.0 691.3,285.0 696.5,282.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="691.3,279.0 696.5,282.0 691.3,285.0 686.1,282.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="686.1,282.0 691.3,285.0 696.5,282.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="881.9,467.0 887.1,470.0 887.1,398.0 881.9,395.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="892.3,467.0 887.1,470.0 887.1,398.0 892.3,395.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="887.1,392.0 892.3,395.0 887.1,398.0 881.9,395.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="881.9,395.0 887.1,398.0 892.3,395.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="680.9,281.0 888.8,401.0 888.8,395.0 680.9,275.0" fill="#514842" stroke="#514842" stroke-width="3.4" stroke-linejoin="round"/><polygon points="956.3,362.0 888.8,401.0 888.8,395.0 956.3,356.0" fill="#3a342f" stroke="#3a342f" stroke-width="3.4" stroke-linejoin="round"/><polygon points="748.5,236.0 956.3,356.0 888.8,395.0 680.9,275.0" fill="#62574e" stroke="#62574e" stroke-width="3.4" stroke-linejoin="round"/><polyline points="680.9,275.0 888.8,395.0 956.3,356.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="784.9,285.0 793.5,290.0 793.5,272.0 784.9,267.0" fill="#39332e" stroke="#39332e" stroke-width="5.6" stroke-linejoin="round"/><polygon points="802.2,285.0 793.5,290.0 793.5,272.0 802.2,267.0" fill="#282421" stroke="#282421" stroke-width="5.6" stroke-linejoin="round"/><polygon points="793.5,262.0 802.2,267.0 793.5,272.0 784.9,267.0" fill="#544f4b" stroke="#544f4b" stroke-width="5.6" stroke-linejoin="round"/><polyline points="784.9,267.0 793.5,272.0 802.2,267.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="757.2,241.0 847.2,293.0 847.2,229.0 757.2,177.0" fill="#14110e" stroke="#14110e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="852.4,290.0 847.2,293.0 847.2,229.0 852.4,226.0" fill="#0d0b0a" stroke="#0d0b0a" stroke-width="3.4" stroke-linejoin="round"/><polygon points="762.4,174.0 852.4,226.0 847.2,229.0 757.2,177.0" fill="#343230" stroke="#343230" stroke-width="3.4" stroke-linejoin="round"/><polyline points="757.2,177.0 847.2,229.0 852.4,226.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,0,1.0000,760.4,183.1)"><rect width="96" height="56" fill="#241e19"/><rect x="4" y="4" width="42" height="24" fill="#3e332b"/><rect x="50" y="4" width="42" height="24" fill="#322922"/><rect x="4" y="33" width="88" height="5" fill="#53e7d8"/><rect x="4" y="40" width="60" height="5" fill="#53e7d8" opacity=".7"/><rect x="22" y="47" width="62" height="5" fill="#34d483" opacity=".8"/><rect class="ph" x="10" y="31" width="1.6" height="23" fill="#ffffff"/></g>
+<g ><polygon points="881.9,341.0 890.5,346.0 890.5,328.0 881.9,323.0" fill="#39332e" stroke="#39332e" stroke-width="5.6" stroke-linejoin="round"/><polygon points="899.2,341.0 890.5,346.0 890.5,328.0 899.2,323.0" fill="#282421" stroke="#282421" stroke-width="5.6" stroke-linejoin="round"/><polygon points="890.5,318.0 899.2,323.0 890.5,328.0 881.9,323.0" fill="#544f4b" stroke="#544f4b" stroke-width="5.6" stroke-linejoin="round"/><polyline points="881.9,323.0 890.5,328.0 899.2,323.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="855.9,298.0 939.0,346.0 939.0,282.0 855.9,234.0" fill="#14110e" stroke="#14110e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="944.2,343.0 939.0,346.0 939.0,282.0 944.2,279.0" fill="#0d0b0a" stroke="#0d0b0a" stroke-width="3.4" stroke-linejoin="round"/><polygon points="861.1,231.0 944.2,279.0 939.0,282.0 855.9,234.0" fill="#343230" stroke="#343230" stroke-width="3.4" stroke-linejoin="round"/><polyline points="855.9,234.0 939.0,282.0 944.2,279.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,0,1.0000,859.2,240.1)"><rect width="88" height="56" fill="#2a1d16"/><circle cx="44" cy="22" r="10" fill="#130e0c"/><ellipse cx="44" cy="52" rx="22" ry="14" fill="#130e0c"/><circle cx="12" cy="10" r="5" fill="#ffb36e" opacity=".35"/></g>
+<g ><polygon points="750.2,305.0 814.3,342.0 814.3,339.0 750.2,302.0" fill="#27221f" stroke="#27221f" stroke-width="1.7" stroke-linejoin="round"/><polygon points="831.6,332.0 814.3,342.0 814.3,339.0 831.6,329.0" fill="#1c1815" stroke="#1c1815" stroke-width="1.7" stroke-linejoin="round"/><polygon points="767.5,292.0 831.6,329.0 814.3,339.0 750.2,302.0" fill="#45403d" stroke="#45403d" stroke-width="1.7" stroke-linejoin="round"/></g>
+<g ><polygon points="911.3,362.0 925.2,370.0 925.2,367.0 911.3,359.0" fill="#4d453f" stroke="#4d453f" stroke-width="1.7" stroke-linejoin="round"/><polygon points="939.0,362.0 925.2,370.0 925.2,367.0 939.0,359.0" fill="#37312d" stroke="#37312d" stroke-width="1.7" stroke-linejoin="round"/><polygon points="925.2,351.0 939.0,359.0 925.2,367.0 911.3,359.0" fill="#655f5a" stroke="#655f5a" stroke-width="1.7" stroke-linejoin="round"/></g>
+<g ><polygon points="921.7,359.0 925.2,361.0 925.2,315.0 921.7,313.0" fill="#4d453f" stroke="#4d453f" stroke-width="2.2" stroke-linejoin="round"/><polygon points="928.6,359.0 925.2,361.0 925.2,315.0 928.6,313.0" fill="#37312d" stroke="#37312d" stroke-width="2.2" stroke-linejoin="round"/><polygon points="925.2,311.0 928.6,313.0 925.2,315.0 921.7,313.0" fill="#655f5a" stroke="#655f5a" stroke-width="2.2" stroke-linejoin="round"/></g>
+<g ><polygon points="906.1,309.0 928.6,322.0 928.6,312.0 906.1,299.0" fill="#4d453f" stroke="#4d453f" stroke-width="5.6" stroke-linejoin="round"/><polygon points="942.5,314.0 928.6,322.0 928.6,312.0 942.5,304.0" fill="#37312d" stroke="#37312d" stroke-width="5.6" stroke-linejoin="round"/><polygon points="920.0,291.0 942.5,304.0 928.6,312.0 906.1,299.0" fill="#655f5a" stroke="#655f5a" stroke-width="5.6" stroke-linejoin="round"/><polyline points="906.1,299.0 928.6,312.0 942.5,304.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="712.1,273.0 722.5,279.0 722.5,265.0 712.1,259.0" fill="#e0dedc" stroke="#e0dedc" stroke-width="6.7" stroke-linejoin="round"/><polygon points="732.9,273.0 722.5,279.0 722.5,265.0 732.9,259.0" fill="#a19f9e" stroke="#a19f9e" stroke-width="6.7" stroke-linejoin="round"/><polygon points="722.5,253.0 732.9,259.0 722.5,265.0 712.1,259.0" fill="#e4e2e0" stroke="#e4e2e0" stroke-width="6.7" stroke-linejoin="round"/><polyline points="712.1,259.0 722.5,265.0 732.9,259.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,726.0,416.5)"><rect width="70" height="60" rx="30.0" fill="#000000" opacity="0.35" filter="url(#blur6)"/></g>
+<g ><polygon points="724.2,444.0 731.2,448.0 731.2,408.0 724.2,404.0" fill="#39332e" stroke="#39332e" stroke-width="4.5" stroke-linejoin="round"/><polygon points="738.1,444.0 731.2,448.0 731.2,408.0 738.1,404.0" fill="#282421" stroke="#282421" stroke-width="4.5" stroke-linejoin="round"/><polygon points="731.2,400.0 738.1,404.0 731.2,408.0 724.2,404.0" fill="#544f4b" stroke="#544f4b" stroke-width="4.5" stroke-linejoin="round"/><polyline points="724.2,404.0 731.2,408.0 738.1,404.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="694.8,405.0 729.4,425.0 729.4,419.0 694.8,399.0" fill="#322c27" stroke="#322c27" stroke-width="3.4" stroke-linejoin="round"/><polygon points="764.1,405.0 729.4,425.0 729.4,419.0 764.1,399.0" fill="#231f1c" stroke="#231f1c" stroke-width="3.4" stroke-linejoin="round"/><polygon points="729.4,379.0 764.1,399.0 729.4,419.0 694.8,399.0" fill="#4e4945" stroke="#4e4945" stroke-width="3.4" stroke-linejoin="round"/><polyline points="694.8,399.0 729.4,419.0 764.1,399.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g><g class="worker" data-st="2">
+<ellipse cx="734.6" cy="442.0" rx="30" ry="15" fill="url(#gShadow)"/><line  x1="716.6" y1="361.0" x2="769.3" y2="324.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="769.3" cy="324.0" r="5.5" fill="#e8b48c"/><g class="mv" style="--dx:6.9px;--dy:2.0px;--t:3s"><line  x1="752.6" y1="361.0" x2="803.9" y2="342.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="803.9" cy="342.0" r="5.5" fill="#e8b48c"/></g><polyline points="727.7,396.0 748.5,384.0 751.1,418.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="754.6" cy="420.5" rx="9" ry="5" fill="#1a120d"/><polyline points="741.6,404.0 762.4,392.0 765.0,426.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="768.4" cy="428.5" rx="9" ry="5" fill="#1a120d"/><path d="M717.6 352.0 C707.6 368.0 704.6 392.0 720.6 400.0 Q734.6 405.0 748.6 400.0 C764.6 392.0 761.6 368.0 751.6 352.0 Q734.6 342.0 717.6 352.0Z" fill="url(#gBlack)"/><circle cx="734.6" cy="326.0" r="24" fill="url(#gSkin)"/><path d="M710.6 326.0 A24 24 0 1 1 758.6 326.0 A24 24 0 0 1 710.6 326.0Z" fill="url(#gHair)"/><ellipse cx="751.1" cy="311.5" rx="16" ry="5.5" fill="#161515" stroke="#2f2d2b" stroke-width="1"/><path d="M709.6 321.0 Q709.6 291.0 734.6 290.0 Q759.6 291.0 759.6 321.0 Q734.6 325.0 709.6 321.0Z" fill="url(#gCap)"/><circle cx="734.6" cy="290.0" r="3" fill="#2f2d2b"/><path d="M724.6 296.0 Q734.6 293.0 744.6 296.0" stroke="#504e4c" stroke-width="1.5" fill="none"/>
+<g class="mv" style="--dx:6.9px;--dy:2.0px;--t:3s;--dl:0s">
+<g ><polygon points="801.3,351.5 809.1,356.0 809.1,352.0 801.3,347.5" fill="#27221f" stroke="#27221f" stroke-width="2.2" stroke-linejoin="round"/><polygon points="820.4,349.5 809.1,356.0 809.1,352.0 820.4,345.5" fill="#1c1815" stroke="#1c1815" stroke-width="2.2" stroke-linejoin="round"/><polygon points="812.6,341.0 820.4,345.5 809.1,352.0 801.3,347.5" fill="#45403d" stroke="#45403d" stroke-width="2.2" stroke-linejoin="round"/></g>
+</g>
+</g><g ><polygon points="698.3,393.0 729.4,411.0 729.4,355.0 698.3,337.0" fill="#2c2621" stroke="#2c2621" stroke-width="3.4" stroke-linejoin="round"/><polygon points="734.6,408.0 729.4,411.0 729.4,355.0 734.6,352.0" fill="#1f1a17" stroke="#1f1a17" stroke-width="3.4" stroke-linejoin="round"/><polygon points="703.5,334.0 734.6,352.0 729.4,355.0 698.3,337.0" fill="#352f2b" stroke="#352f2b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="698.3,337.0 729.4,355.0 734.6,352.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g><g ><polygon points="791.8,605.0 798.7,609.0 798.7,513.0 791.8,509.0" fill="#393029" stroke="#393029" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1049.9,464.0 798.7,609.0 798.7,513.0 1049.9,368.0" fill="#29221d" stroke="#29221d" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1042.9,364.0 1049.9,368.0 798.7,513.0 791.8,509.0" fill="#51463d" stroke="#51463d" stroke-width="4.5" stroke-linejoin="round"/><polyline points="791.8,509.0 798.7,513.0 1049.9,368.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="850.7,527.0 859.3,532.0 859.3,492.0 850.7,487.0" fill="#2a0f0c" stroke="#2a0f0c" stroke-width="5.6" stroke-linejoin="round"/><polygon points="963.3,472.0 859.3,532.0 859.3,492.0 963.3,432.0" fill="#1e0a08" stroke="#1e0a08" stroke-width="5.6" stroke-linejoin="round"/><polygon points="954.6,427.0 963.3,432.0 859.3,492.0 850.7,487.0" fill="#3a1612" stroke="#3a1612" stroke-width="5.6" stroke-linejoin="round"/><polyline points="850.7,487.0 859.3,492.0 963.3,432.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,-0.5000,0,1.0000,859.5,492.1)"><rect class="onair-box" width="120" height="40" rx="4" fill="#ff4b36"/><text x="60" y="28" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="22" fill="#ffffff" letter-spacing="2">ON AIR</text></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,977.1,521.5)"><g opacity=".16"><ellipse class="onair-glow" cx="60" cy="40" rx="70" ry="44" fill="#ff4b36" filter="url(#blur6)"/></g></g><g ><polygon points="1096.6,395.0 1347.8,540.0 1347.8,420.0 1096.6,275.0" fill="#100d0b" stroke="#100d0b" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1354.7,536.0 1347.8,540.0 1347.8,420.0 1354.7,416.0" fill="#0b0907" stroke="#0b0907" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1103.6,271.0 1354.7,416.0 1347.8,420.0 1096.6,275.0" fill="#312f2d" stroke="#312f2d" stroke-width="4.5" stroke-linejoin="round"/><polyline points="1096.6,275.0 1347.8,420.0 1354.7,416.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,0,1.0000,1101.7,284.1)"><rect width="278" height="108" fill="#0a0806"/>
+<rect x="4" y="4" width="130" height="70" fill="#291f17" stroke="#ff4b36" stroke-width="2.5"/>
+<g class="pgm-a"><path d="M34 4h4l12 62h-28z" fill="#ffc56b" opacity=".2"/><path d="M68 4h4l12 62h-28z" fill="#ffc56b" opacity=".2"/><path d="M102 4h4l12 62h-28z" fill="#ffc56b" opacity=".2"/><rect x="4" y="64" width="130" height="8" fill="#362d26"/></g>
+<g class="pgm-b"><rect x="5.5" y="5.5" width="127" height="67" fill="#2a1d16"/><circle cx="69" cy="30" r="10" fill="#130e0c"/><ellipse cx="69" cy="66" rx="26" ry="12" fill="#130e0c"/></g>
+<rect x="8" y="8" width="14" height="6" fill="#ff4b36"/>
+<rect x="140" y="4" width="66" height="33" fill="#2a1d16" stroke="#34d483" stroke-width="2"/>
+<rect x="208" y="4" width="66" height="33" fill="#0a0f0c" stroke="#39332e"/><polyline points="212,30 226,22 236,26 250,14 270,18" fill="none" stroke="#34d483" stroke-width="1.6"/>
+<rect x="140" y="41" width="66" height="33" fill="#3e2e22" stroke="#39332e"/><rect x="208" y="41" width="66" height="33" fill="#111111" stroke="#39332e"/>
+<rect x="4" y="78" width="130" height="26" fill="#000000" stroke="#39332e"/><text x="69" y="97" text-anchor="middle" fill="#f3f1f0" font-family="Poppins, sans-serif" font-size="15" font-weight="700" class="svgClock">00:00</text>
+<rect x="140" y="78" width="134" height="26" fill="#100e0c" stroke="#39332e"/><rect class="m1" x="150" y="82" width="6" height="18" fill="#34d483"/><rect class="m2" x="160" y="82" width="6" height="18" fill="#34d483"/><rect class="m3" x="170" y="82" width="6" height="18" fill="#34d483"/></g>
+<g transform="matrix(0.8660,0.5000,0,1.0000,1086.2,249.1)"><ellipse cx="170" cy="80" rx="190" ry="90" fill="#53e7d8" opacity=".1"/></g>
+<g ><polygon points="1321.8,397.0 1347.8,412.0 1347.8,402.0 1321.8,387.0" fill="#2a0f0c" stroke="#2a0f0c" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1354.7,408.0 1347.8,412.0 1347.8,402.0 1354.7,398.0" fill="#1e0a08" stroke="#1e0a08" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1328.7,383.0 1354.7,398.0 1347.8,402.0 1321.8,387.0" fill="#47302e" stroke="#47302e" stroke-width="4.5" stroke-linejoin="round"/><polyline points="1321.8,387.0 1347.8,402.0 1354.7,398.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,0,1.0000,1321.7,387.0)"><rect class="rec" width="30" height="10" fill="#ff4b36"/></g>
+<g ><polygon points="1150.3,762.0 1181.5,780.0 1181.5,660.0 1150.3,642.0" fill="#322c27" stroke="#322c27" stroke-width="14.0" stroke-linejoin="round"/><polygon points="1259.5,735.0 1181.5,780.0 1181.5,660.0 1259.5,615.0" fill="#231f1c" stroke="#231f1c" stroke-width="14.0" stroke-linejoin="round"/><polygon points="1228.3,597.0 1259.5,615.0 1181.5,660.0 1150.3,642.0" fill="#3e3731" stroke="#3e3731" stroke-width="14.0" stroke-linejoin="round"/><polyline points="1150.3,642.0 1181.5,660.0 1259.5,615.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,1020.4,616.5)"><rect width="70" height="70" rx="35.0" fill="#000000" opacity="0.35" filter="url(#blur6)"/></g>
+<g ><polygon points="999.6,649.0 1006.6,653.0 1006.6,613.0 999.6,609.0" fill="#39332e" stroke="#39332e" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1013.5,649.0 1006.6,653.0 1006.6,613.0 1013.5,609.0" fill="#282421" stroke="#282421" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1006.6,605.0 1013.5,609.0 1006.6,613.0 999.6,609.0" fill="#544f4b" stroke="#544f4b" stroke-width="4.5" stroke-linejoin="round"/><polyline points="999.6,609.0 1006.6,613.0 1013.5,609.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="971.9,609.0 1006.6,629.0 1006.6,623.0 971.9,603.0" fill="#322c27" stroke="#322c27" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1041.2,609.0 1006.6,629.0 1006.6,623.0 1041.2,603.0" fill="#231f1c" stroke="#231f1c" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1006.6,583.0 1041.2,603.0 1006.6,623.0 971.9,603.0" fill="#4e4945" stroke="#4e4945" stroke-width="3.4" stroke-linejoin="round"/><polyline points="971.9,603.0 1006.6,623.0 1041.2,603.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="968.5,595.0 973.7,598.0 973.7,540.0 968.5,537.0" fill="#2c2621" stroke="#2c2621" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1008.3,578.0 973.7,598.0 973.7,540.0 1008.3,520.0" fill="#1f1a17" stroke="#1f1a17" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1003.1,517.0 1008.3,520.0 973.7,540.0 968.5,537.0" fill="#484340" stroke="#484340" stroke-width="3.4" stroke-linejoin="round"/><polyline points="968.5,537.0 973.7,540.0 1008.3,520.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g><g class="worker" data-st="3">
+<ellipse cx="1011.8" cy="652.0" rx="30" ry="15" fill="url(#gShadow)"/><polyline points="1018.7,606.0 1039.5,618.0 1042.1,655.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="1045.5" cy="661.5" rx="9" ry="5" fill="#1a120d"/><polyline points="1004.8,614.0 1025.6,626.0 1028.2,663.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="1031.7" cy="669.5" rx="9" ry="5" fill="#1a120d"/><path d="M994.8 562.0 C984.8 578.0 981.8 602.0 997.8 610.0 Q1011.8 615.0 1025.8 610.0 C1041.8 602.0 1038.8 578.0 1028.8 562.0 Q1011.8 552.0 994.8 562.0Z" fill="url(#gBlack)"/><circle cx="1011.8" cy="536.0" r="24" fill="url(#gSkin)"/><ellipse cx="1010.7" cy="539.0" rx="3" ry="4" fill="#1a110a"/><ellipse cx="1026.7" cy="539.0" rx="3" ry="4" fill="#1a110a"/><circle cx="1011.7" cy="537.5" r="1.2" fill="#ffffff"/><circle cx="1027.7" cy="537.5" r="1.2" fill="#ffffff"/><ellipse cx="1004.7" cy="546.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><ellipse cx="1032.7" cy="546.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><path d="M986.8 531.0 Q986.8 501.0 1011.8 500.0 Q1036.8 501.0 1036.8 531.0 Q1011.8 535.0 986.8 531.0Z" fill="url(#gCap)"/><circle cx="1011.8" cy="500.0" r="3" fill="#2f2d2b"/><path d="M1001.8 506.0 Q1011.8 503.0 1021.8 506.0" stroke="#504e4c" stroke-width="1.5" fill="none"/><ellipse cx="1028.2" cy="526.5" rx="16" ry="5.5" fill="#161515" stroke="#2f2d2b" stroke-width="1"/><path d="M983.8 533.0 C983.8 496.0 1039.8 496.0 1039.8 533.0" stroke="#1b1917" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M983.8 533.0 C983.8 496.0 1039.8 496.0 1039.8 533.0" stroke="#56514e" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="986.8" cy="539.0" rx="7.5" ry="11" fill="#1b1917"/><ellipse cx="985.3" cy="539.0" rx="5.5" ry="9" fill="#45403d"/><ellipse cx="983.8" cy="535.0" rx="1.6" ry="3" fill="#98928e" opacity=".7"/><ellipse cx="1036.8" cy="539.0" rx="7.5" ry="11" fill="#1b1917"/><ellipse cx="1038.3" cy="539.0" rx="5.5" ry="9" fill="#45403d"/><ellipse cx="1036.8" cy="535.0" rx="1.6" ry="3" fill="#98928e" opacity=".7"/>
+</g><g ><polygon points="1134.7,641.0 1139.9,644.0 1139.9,572.0 1134.7,569.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1145.1,641.0 1139.9,644.0 1139.9,572.0 1145.1,569.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1139.9,566.0 1145.1,569.0 1139.9,572.0 1134.7,569.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="1134.7,569.0 1139.9,572.0 1145.1,569.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="984.1,728.0 989.3,731.0 989.3,659.0 984.1,656.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="994.4,728.0 989.3,731.0 989.3,659.0 994.4,656.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="989.3,653.0 994.4,656.0 989.3,659.0 984.1,656.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="984.1,656.0 989.3,659.0 994.4,656.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="1183.2,669.0 1188.4,672.0 1188.4,600.0 1183.2,597.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1193.6,669.0 1188.4,672.0 1188.4,600.0 1193.6,597.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1188.4,594.0 1193.6,597.0 1188.4,600.0 1183.2,597.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="1183.2,597.0 1188.4,600.0 1193.6,597.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="1032.6,756.0 1037.7,759.0 1037.7,687.0 1032.6,684.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1042.9,756.0 1037.7,759.0 1037.7,687.0 1042.9,684.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1037.7,681.0 1042.9,684.0 1037.7,687.0 1032.6,684.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="1032.6,684.0 1037.7,687.0 1042.9,684.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="977.1,656.0 1034.3,689.0 1034.3,683.0 977.1,650.0" fill="#514842" stroke="#514842" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1198.8,594.0 1034.3,689.0 1034.3,683.0 1198.8,588.0" fill="#3a342f" stroke="#3a342f" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1141.7,555.0 1198.8,588.0 1034.3,683.0 977.1,650.0" fill="#62574e" stroke="#62574e" stroke-width="3.4" stroke-linejoin="round"/><polyline points="977.1,650.0 1034.3,683.0 1198.8,588.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="1110.5,623.0 1117.4,627.0 1117.4,585.0 1110.5,581.0" fill="#1d1815" stroke="#1d1815" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1171.1,596.0 1117.4,627.0 1117.4,585.0 1171.1,554.0" fill="#15110e" stroke="#15110e" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1164.2,550.0 1171.1,554.0 1117.4,585.0 1110.5,581.0" fill="#3c3936" stroke="#3c3936" stroke-width="4.5" stroke-linejoin="round"/><polyline points="1110.5,581.0 1117.4,585.0 1171.1,554.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="1037.7,665.0 1044.7,669.0 1044.7,627.0 1037.7,623.0" fill="#1d1815" stroke="#1d1815" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1098.4,638.0 1044.7,669.0 1044.7,627.0 1098.4,596.0" fill="#15110e" stroke="#15110e" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1091.4,592.0 1098.4,596.0 1044.7,627.0 1037.7,623.0" fill="#3c3936" stroke="#3c3936" stroke-width="4.5" stroke-linejoin="round"/><polyline points="1037.7,623.0 1044.7,627.0 1098.4,596.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="1004.8,640.0 1039.5,660.0 1039.5,656.0 1004.8,636.0" fill="#181411" stroke="#181411" stroke-width="2.2" stroke-linejoin="round"/><polygon points="1160.7,590.0 1039.5,660.0 1039.5,656.0 1160.7,586.0" fill="#100e0c" stroke="#100e0c" stroke-width="2.2" stroke-linejoin="round"/><polygon points="1126.1,566.0 1160.7,586.0 1039.5,656.0 1004.8,636.0" fill="#1f1a17" stroke="#1f1a17" stroke-width="2.2" stroke-linejoin="round"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,1126.1,565.9)"><rect x="6" y="8" width="10" height="10" rx="2" fill="#3d3631"/><rect x="6" y="22" width="10" height="10" rx="2" fill="#3d3631"/><rect x="6" y="36" width="10" height="10" rx="2" fill="#ff4b36"/><rect x="6" y="50" width="10" height="10" rx="2" fill="#3d3631"/><rect x="6" y="64" width="10" height="10" rx="2" fill="#3d3631"/><rect class="key-a" x="6" y="78" width="10" height="10" rx="2" fill="#3d3631"/><rect x="6" y="92" width="10" height="10" rx="2" fill="#3d3631"/><rect x="6" y="106" width="10" height="10" rx="2" fill="#3d3631"/><rect x="6" y="120" width="10" height="10" rx="2" fill="#3d3631"/><rect x="20" y="8" width="10" height="10" rx="2" fill="#3d3631"/><rect x="20" y="22" width="10" height="10" rx="2" fill="#3d3631"/><rect x="20" y="36" width="10" height="10" rx="2" fill="#3d3631"/><rect x="20" y="50" width="10" height="10" rx="2" fill="#3d3631"/><rect x="20" y="64" width="10" height="10" rx="2" fill="#34d483"/><rect x="20" y="78" width="10" height="10" rx="2" fill="#3d3631"/><rect x="20" y="92" width="10" height="10" rx="2" fill="#3d3631"/><rect x="20" y="106" width="10" height="10" rx="2" fill="#3d3631"/><rect x="20" y="120" width="10" height="10" rx="2" fill="#3d3631"/></g><g class="worker" data-st="3">
+<g class="mv" style="--dx:0.0px;--dy:4.0px;--t:2.4s"><line  x1="993.8" y1="571.0" x2="1058.5" y2="611.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="1058.5" cy="611.0" r="5.5" fill="#e8b48c"/></g><line  x1="1029.8" y1="571.0" x2="1088.0" y2="594.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="1088.0" cy="594.0" r="5.5" fill="#e8b48c"/>
+</g><g ><polygon points="350.1,464.0 601.3,609.0 601.3,513.0 350.1,368.0" fill="#393029" stroke="#393029" stroke-width="4.5" stroke-linejoin="round"/><polygon points="608.2,605.0 601.3,609.0 601.3,513.0 608.2,509.0" fill="#29221d" stroke="#29221d" stroke-width="4.5" stroke-linejoin="round"/><polygon points="357.1,364.0 608.2,509.0 601.3,513.0 350.1,368.0" fill="#51463d" stroke="#51463d" stroke-width="4.5" stroke-linejoin="round"/><polyline points="350.1,368.0 601.3,513.0 608.2,509.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g ><polygon points="765.8,704.0 1042.9,864.0 1042.9,760.0 765.8,600.0" fill="#382e26" stroke="#382e26" stroke-width="4.5" stroke-linejoin="round"/><polygon points="1049.9,860.0 1042.9,864.0 1042.9,760.0 1049.9,756.0" fill="#28211b" stroke="#28211b" stroke-width="4.5" stroke-linejoin="round"/><polygon points="772.7,596.0 1049.9,756.0 1042.9,760.0 765.8,600.0" fill="#4c4138" stroke="#4c4138" stroke-width="4.5" stroke-linejoin="round"/><polyline points="765.8,600.0 1042.9,760.0 1049.9,756.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="777.9,695.0 826.4,723.0 826.4,661.0 777.9,633.0" fill="#534336" stroke="#534336" stroke-width="3.4" stroke-linejoin="round"/><polygon points="831.6,720.0 826.4,723.0 826.4,661.0 831.6,658.0" fill="#3b2f26" stroke="#3b2f26" stroke-width="3.4" stroke-linejoin="round"/><polygon points="783.1,630.0 831.6,658.0 826.4,661.0 777.9,633.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polyline points="777.9,633.0 826.4,661.0 831.6,658.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="840.3,731.0 888.8,759.0 888.8,697.0 840.3,669.0" fill="#534336" stroke="#534336" stroke-width="3.4" stroke-linejoin="round"/><polygon points="894.0,756.0 888.8,759.0 888.8,697.0 894.0,694.0" fill="#3b2f26" stroke="#3b2f26" stroke-width="3.4" stroke-linejoin="round"/><polygon points="845.5,666.0 894.0,694.0 888.8,697.0 840.3,669.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polyline points="840.3,669.0 888.8,697.0 894.0,694.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="902.6,767.0 951.1,795.0 951.1,733.0 902.6,705.0" fill="#534336" stroke="#534336" stroke-width="3.4" stroke-linejoin="round"/><polygon points="956.3,792.0 951.1,795.0 951.1,733.0 956.3,730.0" fill="#3b2f26" stroke="#3b2f26" stroke-width="3.4" stroke-linejoin="round"/><polygon points="907.8,702.0 956.3,730.0 951.1,733.0 902.6,705.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polyline points="902.6,705.0 951.1,733.0 956.3,730.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="965.0,803.0 1013.5,831.0 1013.5,769.0 965.0,741.0" fill="#534336" stroke="#534336" stroke-width="3.4" stroke-linejoin="round"/><polygon points="1018.7,828.0 1013.5,831.0 1013.5,769.0 1018.7,766.0" fill="#3b2f26" stroke="#3b2f26" stroke-width="3.4" stroke-linejoin="round"/><polygon points="970.2,738.0 1018.7,766.0 1013.5,769.0 965.0,741.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polyline points="965.0,741.0 1013.5,769.0 1018.7,766.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g><g ><polygon points="79.9,624.0 86.9,628.0 86.9,396.0 79.9,392.0" fill="#655a52" stroke="#655a52" stroke-width="4.5" stroke-linejoin="round"/><polygon points="303.4,503.0 86.9,628.0 86.9,396.0 303.4,271.0" fill="#766b62" stroke="#766b62" stroke-width="4.5" stroke-linejoin="round"/><polygon points="296.4,267.0 303.4,271.0 86.9,396.0 79.9,392.0" fill="#766b62" stroke="#766b62" stroke-width="4.5" stroke-linejoin="round"/><polyline points="79.9,392.0 86.9,396.0 303.4,271.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="67.8,395.0 79.9,402.0 79.9,388.0 67.8,381.0" fill="#403831" stroke="#403831" stroke-width="7.8" stroke-linejoin="round"/><polygon points="313.8,267.0 79.9,402.0 79.9,388.0 313.8,253.0" fill="#2d2723" stroke="#2d2723" stroke-width="7.8" stroke-linejoin="round"/><polygon points="301.6,246.0 313.8,253.0 79.9,388.0 67.8,381.0" fill="#5a534d" stroke="#5a534d" stroke-width="7.8" stroke-linejoin="round"/><polyline points="67.8,381.0 79.9,388.0 313.8,253.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="235.8,422.0 241.0,425.0 241.0,335.0 235.8,332.0" fill="#534336" stroke="#534336" stroke-width="3.4" stroke-linejoin="round"/><polygon points="293.0,395.0 241.0,425.0 241.0,335.0 293.0,305.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polygon points="287.8,302.0 293.0,305.0 241.0,335.0 235.8,332.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polyline points="235.8,332.0 241.0,335.0 293.0,305.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="170.0,460.0 175.2,463.0 175.2,373.0 170.0,370.0" fill="#534336" stroke="#534336" stroke-width="3.4" stroke-linejoin="round"/><polygon points="227.2,433.0 175.2,463.0 175.2,373.0 227.2,343.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polygon points="222.0,340.0 227.2,343.0 175.2,373.0 170.0,370.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polyline points="170.0,370.0 175.2,373.0 227.2,343.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="104.2,498.0 109.4,501.0 109.4,411.0 104.2,408.0" fill="#534336" stroke="#534336" stroke-width="3.4" stroke-linejoin="round"/><polygon points="161.3,471.0 109.4,501.0 109.4,411.0 161.3,381.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polygon points="156.1,378.0 161.3,381.0 109.4,411.0 104.2,408.0" fill="#5f4d40" stroke="#5f4d40" stroke-width="3.4" stroke-linejoin="round"/><polyline points="104.2,408.0 109.4,411.0 161.3,381.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,-0.5000,0,1.0000,109.5,389.1)"><rect x="24" y="12" width="180" height="40" rx="8" fill="#140f0c" stroke="#ff8a3d" stroke-width="2.5"/><text x="114" y="40" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="22" letter-spacing="3" fill="#ff8a3d" class="pulse">PODCAST</text></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,448.9,556.5)"><rect width="50" height="50" rx="25.0" fill="#000000" opacity="0.3" filter="url(#blur6)"/></g>
+<g ><polygon points="441.9,583.0 445.4,585.0 445.4,435.0 441.9,433.0" fill="#4d453f" stroke="#4d453f" stroke-width="2.2" stroke-linejoin="round"/><polygon points="448.9,583.0 445.4,585.0 445.4,435.0 448.9,433.0" fill="#37312d" stroke="#37312d" stroke-width="2.2" stroke-linejoin="round"/><polygon points="445.4,431.0 448.9,433.0 445.4,435.0 441.9,433.0" fill="#655f5a" stroke="#655f5a" stroke-width="2.2" stroke-linejoin="round"/></g>
+<g ><polygon points="428.1,575.0 462.7,595.0 462.7,592.0 428.1,572.0" fill="#4d453f" stroke="#4d453f" stroke-width="1.7" stroke-linejoin="round"/><polygon points="465.3,593.5 462.7,595.0 462.7,592.0 465.3,590.5" fill="#37312d" stroke="#37312d" stroke-width="1.7" stroke-linejoin="round"/><polygon points="430.7,570.5 465.3,590.5 462.7,592.0 428.1,572.0" fill="#655f5a" stroke="#655f5a" stroke-width="1.7" stroke-linejoin="round"/></g>
+<g ><polygon points="425.5,593.5 428.1,595.0 428.1,592.0 425.5,590.5" fill="#4d453f" stroke="#4d453f" stroke-width="1.7" stroke-linejoin="round"/><polygon points="462.7,575.0 428.1,595.0 428.1,592.0 462.7,572.0" fill="#37312d" stroke="#37312d" stroke-width="1.7" stroke-linejoin="round"/><polygon points="460.1,570.5 462.7,572.0 428.1,592.0 425.5,590.5" fill="#655f5a" stroke="#655f5a" stroke-width="1.7" stroke-linejoin="round"/></g>
+<g ><polygon points="426.3,420.0 487.0,455.0 487.0,391.0 426.3,356.0" fill="#f3eee2" stroke="#f3eee2" stroke-width="14.0" stroke-linejoin="round"/><polygon points="509.5,442.0 487.0,455.0 487.0,391.0 509.5,378.0" fill="#2d2824" stroke="#2d2824" stroke-width="14.0" stroke-linejoin="round"/><polygon points="448.9,343.0 509.5,378.0 487.0,391.0 426.3,356.0" fill="#4d453f" stroke="#4d453f" stroke-width="14.0" stroke-linejoin="round"/><polyline points="426.3,356.0 487.0,391.0 509.5,378.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,0,1.0000,426.2,356.1)"><rect class="pulse" width="70" height="64" fill="#ffd08a"/></g><g ><polygon points="334.5,577.0 365.7,595.0 365.7,549.0 334.5,531.0" fill="#2a2420" stroke="#2a2420" stroke-width="3.4" stroke-linejoin="round"/><polygon points="370.9,592.0 365.7,595.0 365.7,549.0 370.9,546.0" fill="#1e1917" stroke="#1e1917" stroke-width="3.4" stroke-linejoin="round"/><polygon points="339.7,528.0 370.9,546.0 365.7,549.0 334.5,531.0" fill="#47423f" stroke="#47423f" stroke-width="3.4" stroke-linejoin="round"/><polyline points="334.5,531.0 365.7,549.0 370.9,546.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="310.3,549.0 344.9,569.0 344.9,563.0 310.3,543.0" fill="#3a302a" stroke="#3a302a" stroke-width="3.4" stroke-linejoin="round"/><polygon points="376.1,551.0 344.9,569.0 344.9,563.0 376.1,545.0" fill="#29221e" stroke="#29221e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="341.5,525.0 376.1,545.0 344.9,563.0 310.3,543.0" fill="#554c47" stroke="#554c47" stroke-width="3.4" stroke-linejoin="round"/><polyline points="310.3,543.0 344.9,563.0 376.1,545.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g><g class="talk ta"><ellipse cx="338.0" cy="593.0" rx="30" ry="15" fill="url(#gShadow)"/><polyline points="344.9,555.0 324.1,567.0 321.5,604.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="318.1" cy="610.5" rx="9" ry="5" fill="#1a120d"/><polyline points="331.1,547.0 310.3,559.0 307.7,596.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="304.2" cy="602.5" rx="9" ry="5" fill="#1a120d"/><path d="M321.0 503.0 C311.0 519.0 308.0 543.0 324.0 551.0 Q338.0 556.0 352.0 551.0 C368.0 543.0 365.0 519.0 355.0 503.0 Q338.0 493.0 321.0 503.0Z" fill="url(#gTal)"/><circle cx="338.0" cy="477.0" r="24" fill="url(#gSkin)"/><ellipse cx="323.1" cy="480.0" rx="3" ry="4" fill="#1a110a"/><ellipse cx="339.1" cy="480.0" rx="3" ry="4" fill="#1a110a"/><circle cx="324.1" cy="478.5" r="1.2" fill="#ffffff"/><circle cx="340.1" cy="478.5" r="1.2" fill="#ffffff"/><ellipse cx="317.1" cy="487.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><ellipse cx="345.1" cy="487.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><path d="M314.0 475.0 A24 24 0 0 1 362.0 475.0 Q352.7 463.0 318.0 476.0Z" fill="url(#gHair)"/><line  x1="320.0" y1="512.0" x2="291.2" y2="548.0" stroke="#9b4a5c" stroke-width="10" stroke-linecap="round"/><circle cx="291.2" cy="548.0" r="5.5" fill="#e8b48c"/><g class="mv" style="--dx:-5.2px;--dy:-3.0px;--t:1.6s"><line  x1="356.0" y1="512.0" x2="310.3" y2="559.0" stroke="#9b4a5c" stroke-width="10" stroke-linecap="round"/><circle cx="310.3" cy="559.0" r="5.5" fill="#e8b48c"/></g></g><g transform="matrix(0.8660,0.5000,-0.8660,0.5000,284.3,591.5)"><rect width="64" height="90" rx="32.0" fill="#000000" opacity="0.35" filter="url(#blur6)"/></g>
+<g ><polygon points="280.8,600.0 286.0,603.0 286.0,547.0 280.8,544.0" fill="#2a2420" stroke="#2a2420" stroke-width="3.4" stroke-linejoin="round"/><polygon points="291.2,600.0 286.0,603.0 286.0,547.0 291.2,544.0" fill="#1e1917" stroke="#1e1917" stroke-width="3.4" stroke-linejoin="round"/><polygon points="286.0,541.0 291.2,544.0 286.0,547.0 280.8,544.0" fill="#47423f" stroke="#47423f" stroke-width="3.4" stroke-linejoin="round"/><polyline points="280.8,544.0 286.0,547.0 291.2,544.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="324.1,625.0 329.3,628.0 329.3,572.0 324.1,569.0" fill="#2a2420" stroke="#2a2420" stroke-width="3.4" stroke-linejoin="round"/><polygon points="334.5,625.0 329.3,628.0 329.3,572.0 334.5,569.0" fill="#1e1917" stroke="#1e1917" stroke-width="3.4" stroke-linejoin="round"/><polygon points="329.3,566.0 334.5,569.0 329.3,572.0 324.1,569.0" fill="#47423f" stroke="#47423f" stroke-width="3.4" stroke-linejoin="round"/><polyline points="324.1,569.0 329.3,572.0 334.5,569.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="218.5,636.0 223.7,639.0 223.7,583.0 218.5,580.0" fill="#2a2420" stroke="#2a2420" stroke-width="3.4" stroke-linejoin="round"/><polygon points="228.9,636.0 223.7,639.0 223.7,583.0 228.9,580.0" fill="#1e1917" stroke="#1e1917" stroke-width="3.4" stroke-linejoin="round"/><polygon points="223.7,577.0 228.9,580.0 223.7,583.0 218.5,580.0" fill="#47423f" stroke="#47423f" stroke-width="3.4" stroke-linejoin="round"/><polyline points="218.5,580.0 223.7,583.0 228.9,580.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="261.8,661.0 267.0,664.0 267.0,608.0 261.8,605.0" fill="#2a2420" stroke="#2a2420" stroke-width="3.4" stroke-linejoin="round"/><polygon points="272.2,661.0 267.0,664.0 267.0,608.0 272.2,605.0" fill="#1e1917" stroke="#1e1917" stroke-width="3.4" stroke-linejoin="round"/><polygon points="267.0,602.0 272.2,605.0 267.0,608.0 261.8,605.0" fill="#47423f" stroke="#47423f" stroke-width="3.4" stroke-linejoin="round"/><polyline points="261.8,605.0 267.0,608.0 272.2,605.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="208.1,580.0 263.5,612.0 263.5,606.0 208.1,574.0" fill="#5a4636" stroke="#5a4636" stroke-width="3.4" stroke-linejoin="round"/><polygon points="343.2,566.0 263.5,612.0 263.5,606.0 343.2,560.0" fill="#403226" stroke="#403226" stroke-width="3.4" stroke-linejoin="round"/><polygon points="287.8,528.0 343.2,560.0 263.5,606.0 208.1,574.0" fill="#6e5642" stroke="#6e5642" stroke-width="3.4" stroke-linejoin="round"/><polyline points="208.1,574.0 263.5,606.0 343.2,560.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<line x1="310.3" y1="575.0" x2="301.6" y2="520.0" stroke="#39332e" stroke-width="4" stroke-linecap="round"/>
+<g ><polygon points="299.9,575.0 310.3,581.0 310.3,578.0 299.9,572.0" fill="#39332e" stroke="#39332e" stroke-width="1.7" stroke-linejoin="round"/><polygon points="320.7,575.0 310.3,581.0 310.3,578.0 320.7,572.0" fill="#282421" stroke="#282421" stroke-width="1.7" stroke-linejoin="round"/><polygon points="310.3,566.0 320.7,572.0 310.3,578.0 299.9,572.0" fill="#544f4b" stroke="#544f4b" stroke-width="1.7" stroke-linejoin="round"/></g>
+<ellipse cx="301.6" cy="520.0" rx="6" ry="9" fill="#24201d" stroke="#72675e" stroke-width="1.5"/>
+<line x1="293.0" y1="585.0" x2="256.6" y2="546.0" stroke="#39332e" stroke-width="4" stroke-linecap="round"/>
+<g ><polygon points="282.6,585.0 293.0,591.0 293.0,588.0 282.6,582.0" fill="#39332e" stroke="#39332e" stroke-width="1.7" stroke-linejoin="round"/><polygon points="303.4,585.0 293.0,591.0 293.0,588.0 303.4,582.0" fill="#282421" stroke="#282421" stroke-width="1.7" stroke-linejoin="round"/><polygon points="293.0,576.0 303.4,582.0 293.0,588.0 282.6,582.0" fill="#544f4b" stroke="#544f4b" stroke-width="1.7" stroke-linejoin="round"/></g>
+<ellipse cx="256.6" cy="546.0" rx="6" ry="9" fill="#24201d" stroke="#72675e" stroke-width="1.5"/>
+<g ><polygon points="257.5,553.5 265.3,558.0 265.3,546.0 257.5,541.5" fill="#e0dedc" stroke="#e0dedc" stroke-width="5.0" stroke-linejoin="round"/><polygon points="273.0,553.5 265.3,558.0 265.3,546.0 273.0,541.5" fill="#a19f9e" stroke="#a19f9e" stroke-width="5.0" stroke-linejoin="round"/><polygon points="265.3,537.0 273.0,541.5 265.3,546.0 257.5,541.5" fill="#e4e2e0" stroke="#e4e2e0" stroke-width="5.0" stroke-linejoin="round"/><polyline points="257.5,541.5 265.3,546.0 273.0,541.5" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="234.1,569.0 247.9,577.0 247.9,575.0 234.1,567.0" fill="#efe8e0"/><polygon points="265.3,567.0 247.9,577.0 247.9,575.0 265.3,565.0" fill="#aca7a1"/><polygon points="251.4,557.0 265.3,565.0 247.9,575.0 234.1,567.0" fill="#f1ebe4"/></g><g ><polygon points="187.3,662.0 218.5,680.0 218.5,640.0 187.3,622.0" fill="#2a2420" stroke="#2a2420" stroke-width="3.4" stroke-linejoin="round"/><polygon points="223.7,677.0 218.5,680.0 218.5,640.0 223.7,637.0" fill="#1e1917" stroke="#1e1917" stroke-width="3.4" stroke-linejoin="round"/><polygon points="192.5,619.0 223.7,637.0 218.5,640.0 187.3,622.0" fill="#47423f" stroke="#47423f" stroke-width="3.4" stroke-linejoin="round"/><polyline points="187.3,622.0 218.5,640.0 223.7,637.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="166.5,632.0 201.2,652.0 201.2,646.0 166.5,626.0" fill="#3a302a" stroke="#3a302a" stroke-width="3.4" stroke-linejoin="round"/><polygon points="232.3,634.0 201.2,652.0 201.2,646.0 232.3,628.0" fill="#29221e" stroke="#29221e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="197.7,608.0 232.3,628.0 201.2,646.0 166.5,626.0" fill="#554c47" stroke="#554c47" stroke-width="3.4" stroke-linejoin="round"/><polyline points="166.5,626.0 201.2,646.0 232.3,628.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g><g class="talk tb"><ellipse cx="199.4" cy="673.0" rx="30" ry="15" fill="url(#gShadow)"/><g class="mv" style="--dx:5.2px;--dy:-9.0px;--t:1.9s"><line  x1="181.4" y1="592.0" x2="228.9" y2="582.0" stroke="#6f7d38" stroke-width="10" stroke-linecap="round"/><circle cx="228.9" cy="582.0" r="5.5" fill="#e8b48c"/></g><line  x1="217.4" y1="592.0" x2="251.4" y2="595.0" stroke="#6f7d38" stroke-width="10" stroke-linecap="round"/><circle cx="251.4" cy="595.0" r="5.5" fill="#e8b48c"/><polyline points="192.5,627.0 213.3,615.0 215.9,649.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="219.4" cy="651.5" rx="9" ry="5" fill="#1a120d"/><polyline points="206.4,635.0 227.2,623.0 229.7,657.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="233.2" cy="659.5" rx="9" ry="5" fill="#1a120d"/><path d="M182.4 583.0 C172.4 599.0 169.4 623.0 185.4 631.0 Q199.4 636.0 213.4 631.0 C229.4 623.0 226.4 599.0 216.4 583.0 Q199.4 573.0 182.4 583.0Z" fill="url(#gGuest)"/><circle cx="199.4" cy="557.0" r="24" fill="url(#gSkin)"/><path d="M175.4 557.0 A24 24 0 1 1 223.4 557.0 A24 24 0 0 1 175.4 557.0Z" fill="url(#gHair)"/></g><g ><polygon points="166.5,628.0 197.7,646.0 197.7,606.0 166.5,588.0" fill="#2a2420" stroke="#2a2420" stroke-width="3.4" stroke-linejoin="round"/><polygon points="202.9,643.0 197.7,646.0 197.7,606.0 202.9,603.0" fill="#1e1917" stroke="#1e1917" stroke-width="3.4" stroke-linejoin="round"/><polygon points="171.7,585.0 202.9,603.0 197.7,606.0 166.5,588.0" fill="#47423f" stroke="#47423f" stroke-width="3.4" stroke-linejoin="round"/><polyline points="166.5,588.0 197.7,606.0 202.9,603.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="matrix(0.8660,0.5000,-0.8660,0.5000,502.5,629.5)"><rect width="60" height="60" rx="30.0" fill="#000000" opacity="0.4" filter="url(#blur6)"/></g>
+<line x1="502.5" y1="568.0" x2="461.0" y2="658.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="502.5" y1="568.0" x2="511.2" y2="681.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="502.5" y1="568.0" x2="530.3" y2="648.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<g ><polygon points="485.2,568.0 502.5,578.0 502.5,572.0 485.2,562.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="519.9,568.0 502.5,578.0 502.5,572.0 519.9,562.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="502.5,552.0 519.9,562.0 502.5,572.0 485.2,562.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="485.2,562.0 502.5,572.0 519.9,562.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="474.8,560.0 514.7,583.0 514.7,557.0 474.8,534.0" fill="#352f2a" stroke="#352f2a" stroke-width="14.0" stroke-linejoin="round"/><polygon points="538.9,569.0 514.7,583.0 514.7,557.0 538.9,543.0" fill="#26211e" stroke="#26211e" stroke-width="14.0" stroke-linejoin="round"/><polygon points="499.1,520.0 538.9,543.0 514.7,557.0 474.8,534.0" fill="#443c36" stroke="#443c36" stroke-width="14.0" stroke-linejoin="round"/><polyline points="474.8,534.0 514.7,557.0 538.9,543.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="461.0,545.0 480.0,556.0 480.0,537.0 461.0,526.0" fill="#25201d" stroke="#25201d" stroke-width="10.6" stroke-linejoin="round"/><polygon points="497.4,546.0 480.0,556.0 480.0,537.0 497.4,527.0" fill="#1a1714" stroke="#1a1714" stroke-width="10.6" stroke-linejoin="round"/><polygon points="478.3,516.0 497.4,527.0 480.0,537.0 461.0,526.0" fill="#43403d" stroke="#43403d" stroke-width="10.6" stroke-linejoin="round"/><polyline points="461.0,526.0 480.0,537.0 497.4,527.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="499.1,536.0 519.9,548.0 519.9,543.0 499.1,531.0" fill="#4d453f" stroke="#4d453f" stroke-width="2.8" stroke-linejoin="round"/><polygon points="526.8,544.0 519.9,548.0 519.9,543.0 526.8,539.0" fill="#37312d" stroke="#37312d" stroke-width="2.8" stroke-linejoin="round"/><polygon points="506.0,527.0 526.8,539.0 519.9,543.0 499.1,531.0" fill="#655f5a" stroke="#655f5a" stroke-width="2.8" stroke-linejoin="round"/></g>
+<g ><polygon points="516.4,579.0 519.0,580.5 519.0,562.5 516.4,561.0" fill="#151210" stroke="#151210" stroke-width="1.7" stroke-linejoin="round"/><polygon points="539.8,568.5 519.0,580.5 519.0,562.5 539.8,550.5" fill="#0f0d0b" stroke="#0f0d0b" stroke-width="1.7" stroke-linejoin="round"/><polygon points="537.2,549.0 539.8,550.5 519.0,562.5 516.4,561.0" fill="#353331" stroke="#353331" stroke-width="1.7" stroke-linejoin="round"/></g>
+<g transform="matrix(0.8660,-0.5000,0,1.0000,519.2,562.6)"><rect width="24" height="18" fill="#3e342d"/><circle class="rec" cx="4" cy="3.5" r="1.8" fill="#ff4b36"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,448.9,692.5)"><rect width="60" height="60" rx="30.0" fill="#000000" opacity="0.4" filter="url(#blur6)"/></g>
+<line x1="448.9" y1="631.0" x2="407.3" y2="721.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="448.9" y1="631.0" x2="457.5" y2="744.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="448.9" y1="631.0" x2="476.6" y2="711.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<g ><polygon points="431.5,631.0 448.9,641.0 448.9,635.0 431.5,625.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="466.2,631.0 448.9,641.0 448.9,635.0 466.2,625.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="448.9,615.0 466.2,625.0 448.9,635.0 431.5,625.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="431.5,625.0 448.9,635.0 466.2,625.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="421.1,623.0 461.0,646.0 461.0,620.0 421.1,597.0" fill="#352f2a" stroke="#352f2a" stroke-width="14.0" stroke-linejoin="round"/><polygon points="485.2,632.0 461.0,646.0 461.0,620.0 485.2,606.0" fill="#26211e" stroke="#26211e" stroke-width="14.0" stroke-linejoin="round"/><polygon points="445.4,583.0 485.2,606.0 461.0,620.0 421.1,597.0" fill="#443c36" stroke="#443c36" stroke-width="14.0" stroke-linejoin="round"/><polyline points="421.1,597.0 461.0,620.0 485.2,606.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="407.3,608.0 426.3,619.0 426.3,600.0 407.3,589.0" fill="#25201d" stroke="#25201d" stroke-width="10.6" stroke-linejoin="round"/><polygon points="443.7,609.0 426.3,619.0 426.3,600.0 443.7,590.0" fill="#1a1714" stroke="#1a1714" stroke-width="10.6" stroke-linejoin="round"/><polygon points="424.6,579.0 443.7,590.0 426.3,600.0 407.3,589.0" fill="#43403d" stroke="#43403d" stroke-width="10.6" stroke-linejoin="round"/><polyline points="407.3,589.0 426.3,600.0 443.7,590.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="445.4,599.0 466.2,611.0 466.2,606.0 445.4,594.0" fill="#4d453f" stroke="#4d453f" stroke-width="2.8" stroke-linejoin="round"/><polygon points="473.1,607.0 466.2,611.0 466.2,606.0 473.1,602.0" fill="#37312d" stroke="#37312d" stroke-width="2.8" stroke-linejoin="round"/><polygon points="452.3,590.0 473.1,602.0 466.2,606.0 445.4,594.0" fill="#655f5a" stroke="#655f5a" stroke-width="2.8" stroke-linejoin="round"/></g>
+<g ><polygon points="462.7,642.0 465.3,643.5 465.3,625.5 462.7,624.0" fill="#151210" stroke="#151210" stroke-width="1.7" stroke-linejoin="round"/><polygon points="486.1,631.5 465.3,643.5 465.3,625.5 486.1,613.5" fill="#0f0d0b" stroke="#0f0d0b" stroke-width="1.7" stroke-linejoin="round"/><polygon points="483.5,612.0 486.1,613.5 465.3,625.5 462.7,624.0" fill="#353331" stroke="#353331" stroke-width="1.7" stroke-linejoin="round"/></g>
+<g transform="matrix(0.8660,-0.5000,0,1.0000,465.5,625.6)"><rect width="24" height="18" fill="#3e342d"/><circle class="rec" cx="4" cy="3.5" r="1.8" fill="#ff4b36"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,339.7,723.5)"><rect width="60" height="60" rx="30.0" fill="#000000" opacity="0.4" filter="url(#blur6)"/></g>
+<line x1="339.7" y1="662.0" x2="298.2" y2="752.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="339.7" y1="662.0" x2="348.4" y2="775.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="339.7" y1="662.0" x2="367.4" y2="742.0" stroke="#5c534c" stroke-width="4.5" stroke-linecap="round"/>
+<g ><polygon points="322.4,662.0 339.7,672.0 339.7,666.0 322.4,656.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="357.1,662.0 339.7,672.0 339.7,666.0 357.1,656.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="339.7,646.0 357.1,656.0 339.7,666.0 322.4,656.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="322.4,656.0 339.7,666.0 357.1,656.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="312.0,654.0 351.9,677.0 351.9,651.0 312.0,628.0" fill="#352f2a" stroke="#352f2a" stroke-width="14.0" stroke-linejoin="round"/><polygon points="376.1,663.0 351.9,677.0 351.9,651.0 376.1,637.0" fill="#26211e" stroke="#26211e" stroke-width="14.0" stroke-linejoin="round"/><polygon points="336.3,614.0 376.1,637.0 351.9,651.0 312.0,628.0" fill="#443c36" stroke="#443c36" stroke-width="14.0" stroke-linejoin="round"/><polyline points="312.0,628.0 351.9,651.0 376.1,637.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="298.2,639.0 317.2,650.0 317.2,631.0 298.2,620.0" fill="#25201d" stroke="#25201d" stroke-width="10.6" stroke-linejoin="round"/><polygon points="334.5,640.0 317.2,650.0 317.2,631.0 334.5,621.0" fill="#1a1714" stroke="#1a1714" stroke-width="10.6" stroke-linejoin="round"/><polygon points="315.5,610.0 334.5,621.0 317.2,631.0 298.2,620.0" fill="#43403d" stroke="#43403d" stroke-width="10.6" stroke-linejoin="round"/><polyline points="298.2,620.0 317.2,631.0 334.5,621.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="336.3,630.0 357.1,642.0 357.1,637.0 336.3,625.0" fill="#4d453f" stroke="#4d453f" stroke-width="2.8" stroke-linejoin="round"/><polygon points="364.0,638.0 357.1,642.0 357.1,637.0 364.0,633.0" fill="#37312d" stroke="#37312d" stroke-width="2.8" stroke-linejoin="round"/><polygon points="343.2,621.0 364.0,633.0 357.1,637.0 336.3,625.0" fill="#655f5a" stroke="#655f5a" stroke-width="2.8" stroke-linejoin="round"/></g>
+<g ><polygon points="353.6,673.0 356.2,674.5 356.2,656.5 353.6,655.0" fill="#151210" stroke="#151210" stroke-width="1.7" stroke-linejoin="round"/><polygon points="377.0,662.5 356.2,674.5 356.2,656.5 377.0,644.5" fill="#0f0d0b" stroke="#0f0d0b" stroke-width="1.7" stroke-linejoin="round"/><polygon points="374.4,643.0 377.0,644.5 356.2,656.5 353.6,655.0" fill="#353331" stroke="#353331" stroke-width="1.7" stroke-linejoin="round"/></g>
+<g transform="matrix(0.8660,-0.5000,0,1.0000,356.4,656.6)"><rect width="24" height="18" fill="#3e342d"/><circle class="rec" cx="4" cy="3.5" r="1.8" fill="#ff4b36"/></g><g class="worker" data-st="1">
+<ellipse cx="493.9" cy="749.0" rx="30" ry="15" fill="url(#gShadow)"/><line  x1="475.9" y1="674.0" x2="459.2" y2="637.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="459.2" cy="637.0" r="5.5" fill="#e8b48c"/><g class="mv" style="--dx:-3.5px;--dy:1.0px;--t:3.4s"><line  x1="511.9" y1="674.0" x2="476.6" y2="601.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="476.6" cy="601.0" r="5.5" fill="#e8b48c"/></g><line  x1="487.0" y1="713.0" x2="487.0" y2="747.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="484.4" cy="749.5" rx="9" ry="5" fill="#1a120d"/><line  x1="500.8" y1="705.0" x2="500.8" y2="739.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="498.2" cy="741.5" rx="9" ry="5" fill="#1a120d"/><path d="M476.9 665.0 C466.9 681.0 463.9 705.0 479.9 713.0 Q493.9 718.0 507.9 713.0 C523.9 705.0 520.9 681.0 510.9 665.0 Q493.9 655.0 476.9 665.0Z" fill="url(#gBlack)"/><circle cx="493.9" cy="639.0" r="24" fill="url(#gSkin)"/><path d="M469.9 639.0 A24 24 0 1 1 517.9 639.0 A24 24 0 0 1 469.9 639.0Z" fill="url(#gHair)"/><ellipse cx="477.4" cy="624.5" rx="16" ry="5.5" fill="#161515" stroke="#2f2d2b" stroke-width="1"/><path d="M468.9 634.0 Q468.9 604.0 493.9 603.0 Q518.9 604.0 518.9 634.0 Q493.9 638.0 468.9 634.0Z" fill="url(#gCap)"/><circle cx="493.9" cy="603.0" r="3" fill="#2f2d2b"/><path d="M483.9 609.0 Q493.9 606.0 503.9 609.0" stroke="#504e4c" stroke-width="1.5" fill="none"/>
+</g><g ><polygon points="656.7,763.0 661.9,766.0 661.9,696.0 656.7,693.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="667.1,763.0 661.9,766.0 661.9,696.0 667.1,693.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="661.9,690.0 667.1,693.0 661.9,696.0 656.7,693.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="656.7,693.0 661.9,696.0 667.1,693.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="604.7,717.0 613.4,722.0 613.4,652.0 604.7,647.0" fill="#100d0b" stroke="#100d0b" stroke-width="5.6" stroke-linejoin="round"/><polygon points="708.7,667.0 613.4,722.0 613.4,652.0 708.7,597.0" fill="#0b0907" stroke="#0b0907" stroke-width="5.6" stroke-linejoin="round"/><polygon points="700.0,592.0 708.7,597.0 613.4,652.0 604.7,647.0" fill="#312f2d" stroke="#312f2d" stroke-width="5.6" stroke-linejoin="round"/><polyline points="604.7,647.0 613.4,652.0 708.7,597.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,-0.5000,0,1.0000,617.0,654.1)"><rect width="102" height="62" fill="#1c1713"/><svg width="102" height="62" viewBox="0 0 102 62"><g class="wave"><path d="M0 22q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0q6 -10 12 0 t12 0" fill="none" stroke="#34d483" stroke-width="2"/><path d="M0 46q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0q5 -12 10 0 t10 0" fill="none" stroke="#53e7d8" stroke-width="2"/></g></svg><rect x="50" width="1.5" height="62" fill="#f3f1f0"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,777.9,806.5)"><rect width="70" height="60" rx="30.0" fill="#000000" opacity="0.35" filter="url(#blur6)"/></g>
+<g ><polygon points="762.4,832.0 769.3,836.0 769.3,796.0 762.4,792.0" fill="#39332e" stroke="#39332e" stroke-width="4.5" stroke-linejoin="round"/><polygon points="776.2,832.0 769.3,836.0 769.3,796.0 776.2,792.0" fill="#282421" stroke="#282421" stroke-width="4.5" stroke-linejoin="round"/><polygon points="769.3,788.0 776.2,792.0 769.3,796.0 762.4,792.0" fill="#544f4b" stroke="#544f4b" stroke-width="4.5" stroke-linejoin="round"/><polyline points="762.4,792.0 769.3,796.0 776.2,792.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="734.6,792.0 769.3,812.0 769.3,806.0 734.6,786.0" fill="#322c27" stroke="#322c27" stroke-width="3.4" stroke-linejoin="round"/><polygon points="803.9,792.0 769.3,812.0 769.3,806.0 803.9,786.0" fill="#231f1c" stroke="#231f1c" stroke-width="3.4" stroke-linejoin="round"/><polygon points="769.3,766.0 803.9,786.0 769.3,806.0 734.6,786.0" fill="#4e4945" stroke="#4e4945" stroke-width="3.4" stroke-linejoin="round"/><polyline points="734.6,786.0 769.3,806.0 803.9,786.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="765.8,762.0 800.5,782.0 800.5,724.0 765.8,704.0" fill="#2c2621" stroke="#2c2621" stroke-width="3.4" stroke-linejoin="round"/><polygon points="805.7,779.0 800.5,782.0 800.5,724.0 805.7,721.0" fill="#1f1a17" stroke="#1f1a17" stroke-width="3.4" stroke-linejoin="round"/><polygon points="771.0,701.0 805.7,721.0 800.5,724.0 765.8,704.0" fill="#484340" stroke="#484340" stroke-width="3.4" stroke-linejoin="round"/><polyline points="765.8,704.0 800.5,724.0 805.7,721.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g><g class="worker" data-st="4">
+<ellipse cx="760.6" cy="837.0" rx="30" ry="15" fill="url(#gShadow)"/><polyline points="767.5,799.0 746.8,811.0 744.2,848.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="740.7" cy="854.5" rx="9" ry="5" fill="#1a120d"/><polyline points="753.7,791.0 732.9,803.0 730.3,840.5" fill="none" stroke="#3a2c24" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="726.8" cy="846.5" rx="9" ry="5" fill="#1a120d"/><path d="M743.6 747.0 C733.6 763.0 730.6 787.0 746.6 795.0 Q760.6 800.0 774.6 795.0 C790.6 787.0 787.6 763.0 777.6 747.0 Q760.6 737.0 743.6 747.0Z" fill="url(#gBlack)"/><circle cx="760.6" cy="721.0" r="24" fill="url(#gSkin)"/><ellipse cx="745.7" cy="724.0" rx="3" ry="4" fill="#1a110a"/><ellipse cx="761.7" cy="724.0" rx="3" ry="4" fill="#1a110a"/><circle cx="746.7" cy="722.5" r="1.2" fill="#ffffff"/><circle cx="762.7" cy="722.5" r="1.2" fill="#ffffff"/><ellipse cx="739.7" cy="731.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><ellipse cx="767.7" cy="731.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><path d="M735.6 716.0 Q735.6 686.0 760.6 685.0 Q785.6 686.0 785.6 716.0 Q760.6 720.0 735.6 716.0Z" fill="url(#gCap)"/><circle cx="760.6" cy="685.0" r="3" fill="#2f2d2b"/><path d="M750.6 691.0 Q760.6 688.0 770.6 691.0" stroke="#504e4c" stroke-width="1.5" fill="none"/><ellipse cx="744.2" cy="711.5" rx="16" ry="5.5" fill="#161515" stroke="#2f2d2b" stroke-width="1"/><path d="M732.6 718.0 C732.6 681.0 788.6 681.0 788.6 718.0" stroke="#1b1917" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M732.6 718.0 C732.6 681.0 788.6 681.0 788.6 718.0" stroke="#56514e" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="735.6" cy="724.0" rx="7.5" ry="11" fill="#1b1917"/><ellipse cx="734.1" cy="724.0" rx="5.5" ry="9" fill="#45403d"/><ellipse cx="732.6" cy="720.0" rx="1.6" ry="3" fill="#98928e" opacity=".7"/><ellipse cx="785.6" cy="724.0" rx="7.5" ry="11" fill="#1b1917"/><ellipse cx="787.1" cy="724.0" rx="5.5" ry="9" fill="#45403d"/><ellipse cx="785.6" cy="720.0" rx="1.6" ry="3" fill="#98928e" opacity=".7"/>
+</g><g ><polygon points="556.2,855.0 729.4,955.0 729.4,895.0 556.2,795.0" fill="#2c2723" stroke="#2c2723" stroke-width="14.0" stroke-linejoin="round"/><polygon points="803.9,912.0 729.4,955.0 729.4,895.0 803.9,852.0" fill="#1f1c19" stroke="#1f1c19" stroke-width="14.0" stroke-linejoin="round"/><polygon points="630.7,752.0 803.9,852.0 729.4,895.0 556.2,795.0" fill="#3e3731" stroke="#3e3731" stroke-width="14.0" stroke-linejoin="round"/><polyline points="556.2,795.0 729.4,895.0 803.9,852.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="556.2,795.0 729.4,895.0 729.4,887.0 556.2,787.0" fill="#3e3731" stroke="#3e3731" stroke-width="4.5" stroke-linejoin="round"/><polygon points="803.9,852.0 729.4,895.0 729.4,887.0 803.9,844.0" fill="#2c2723" stroke="#2c2723" stroke-width="4.5" stroke-linejoin="round"/><polygon points="630.7,744.0 803.9,844.0 729.4,887.0 556.2,787.0" fill="#4a413a" stroke="#4a413a" stroke-width="4.5" stroke-linejoin="round"/><polyline points="556.2,787.0 729.4,887.0 803.9,844.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,630.7,743.9)"><rect x="12" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd0"><rect x="8" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="13" cy="64" r="3" fill="#4d453f"/><circle cx="13" cy="74" r="3" fill="#4d453f"/><rect x="28" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd1"><rect x="24" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="29" cy="64" r="3" fill="#4d453f"/><circle cx="29" cy="74" r="3" fill="#4d453f"/><rect x="44" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd2"><rect x="40" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="45" cy="64" r="3" fill="#4d453f"/><circle cx="45" cy="74" r="3" fill="#4d453f"/><rect x="60" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd3"><rect x="56" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="61" cy="64" r="3" fill="#4d453f"/><circle cx="61" cy="74" r="3" fill="#4d453f"/><rect x="76" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd0"><rect x="72" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="77" cy="64" r="3" fill="#4d453f"/><circle cx="77" cy="74" r="3" fill="#4d453f"/><rect x="92" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd1"><rect x="88" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="93" cy="64" r="3" fill="#4d453f"/><circle cx="93" cy="74" r="3" fill="#4d453f"/><rect x="108" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd2"><rect x="104" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="109" cy="64" r="3" fill="#4d453f"/><circle cx="109" cy="74" r="3" fill="#4d453f"/><rect x="124" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd3"><rect x="120" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="125" cy="64" r="3" fill="#4d453f"/><circle cx="125" cy="74" r="3" fill="#4d453f"/><rect x="140" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd0"><rect x="136" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="141" cy="64" r="3" fill="#4d453f"/><circle cx="141" cy="74" r="3" fill="#4d453f"/><rect x="156" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd1"><rect x="152" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="157" cy="64" r="3" fill="#4d453f"/><circle cx="157" cy="74" r="3" fill="#4d453f"/><rect x="172" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd2"><rect x="168" y="28" width="10" height="7" rx="1.5" fill="#e0dedc"/></g><circle cx="173" cy="64" r="3" fill="#4d453f"/><circle cx="173" cy="74" r="3" fill="#4d453f"/><rect x="188" y="10" width="2" height="44" fill="#110f0d"/><g class="fd fd3"><rect x="184" y="28" width="10" height="7" rx="1.5" fill="#ff4b36"/></g><circle cx="189" cy="64" r="3" fill="#4d453f"/><circle cx="189" cy="74" r="3" fill="#4d453f"/><rect x="4" y="2" width="192" height="3" fill="#34d483" opacity=".5"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,544.1,807.5)"><rect width="40" height="40" rx="20.0" fill="#000000" opacity="0.35" filter="url(#blur6)"/></g>
+<g ><polygon points="542.4,825.0 547.6,828.0 547.6,736.0 542.4,733.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="552.8,825.0 547.6,828.0 547.6,736.0 552.8,733.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="547.6,730.0 552.8,733.0 547.6,736.0 542.4,733.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="542.4,733.0 547.6,736.0 552.8,733.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="526.8,732.0 551.0,746.0 551.0,704.0 526.8,690.0" fill="#2a2521" stroke="#2a2521" stroke-width="13.4" stroke-linejoin="round"/><polygon points="571.8,734.0 551.0,746.0 551.0,704.0 571.8,692.0" fill="#1e1a17" stroke="#1e1a17" stroke-width="13.4" stroke-linejoin="round"/><polygon points="547.6,678.0 571.8,692.0 551.0,704.0 526.8,690.0" fill="#352f2b" stroke="#352f2b" stroke-width="13.4" stroke-linejoin="round"/><polyline points="526.8,690.0 551.0,704.0 571.8,692.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="matrix(0.8660,0.5000,-0.8660,0.5000,777.9,942.5)"><rect width="40" height="40" rx="20.0" fill="#000000" opacity="0.35" filter="url(#blur6)"/></g>
+<g ><polygon points="776.2,960.0 781.4,963.0 781.4,871.0 776.2,868.0" fill="#39332e" stroke="#39332e" stroke-width="3.4" stroke-linejoin="round"/><polygon points="786.6,960.0 781.4,963.0 781.4,871.0 786.6,868.0" fill="#282421" stroke="#282421" stroke-width="3.4" stroke-linejoin="round"/><polygon points="781.4,865.0 786.6,868.0 781.4,871.0 776.2,868.0" fill="#544f4b" stroke="#544f4b" stroke-width="3.4" stroke-linejoin="round"/><polyline points="776.2,868.0 781.4,871.0 786.6,868.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g ><polygon points="760.6,867.0 784.9,881.0 784.9,839.0 760.6,825.0" fill="#2a2521" stroke="#2a2521" stroke-width="13.4" stroke-linejoin="round"/><polygon points="805.7,869.0 784.9,881.0 784.9,839.0 805.7,827.0" fill="#1e1a17" stroke="#1e1a17" stroke-width="13.4" stroke-linejoin="round"/><polygon points="781.4,813.0 805.7,827.0 784.9,839.0 760.6,825.0" fill="#352f2b" stroke="#352f2b" stroke-width="13.4" stroke-linejoin="round"/><polyline points="760.6,825.0 784.9,839.0 805.7,827.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.0" stroke-linejoin="round" stroke-linecap="round"/></g><g class="worker" data-st="4">
+<line  x1="742.6" y1="756.0" x2="689.6" y2="786.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="689.6" cy="786.0" r="5.5" fill="#e8b48c"/><g class="mv" style="--dx:-8.7px;--dy:5.0px;--t:3.2s"><line  x1="778.6" y1="756.0" x2="722.5" y2="805.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="722.5" cy="805.0" r="5.5" fill="#e8b48c"/></g>
+</g><g ><polygon points="694.8,1025.0 717.3,1038.0 717.3,1008.0 694.8,995.0" fill="#4d453f" stroke="#4d453f" stroke-width="14.0" stroke-linejoin="round"/><polygon points="739.8,1025.0 717.3,1038.0 717.3,1008.0 739.8,995.0" fill="#37312d" stroke="#37312d" stroke-width="14.0" stroke-linejoin="round"/><polygon points="717.3,982.0 739.8,995.0 717.3,1008.0 694.8,995.0" fill="#655f5a" stroke="#655f5a" stroke-width="14.0" stroke-linejoin="round"/><polyline points="694.8,995.0 717.3,1008.0 739.8,995.0" fill="none" stroke="#ffffff" stroke-opacity=".10" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(0,0)"></g>
+<path d="M717.3205080756887 995.0c-14-40 6-70 -4-96M717.3205080756887 995.0c16-34 2-62 16-86M717.3205080756887 995.0c-4-30 -26-44 -30-64" stroke="#2f7a55" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+<g id="walker"><g class="wk" data-f="+x"><ellipse cx="0.0" cy="0.0" rx="30" ry="15" fill="url(#gShadow)"/><g class="leg0" style="--lx:6.9px;--ly:4.0px"><line  x1="6.9" y1="-44.0" x2="6.9" y2="-10.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="9.5" cy="-4.5" rx="9" ry="5" fill="#1a120d"/></g><g class="leg1" style="--lx:6.9px;--ly:4.0px"><line  x1="-6.9" y1="-36.0" x2="-6.9" y2="-2.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="-4.3" cy="3.5" rx="9" ry="5" fill="#1a120d"/></g><path d="M-17.0 -84.0 C-27.0 -68.0 -30.0 -44.0 -14.0 -36.0 Q0.0 -31.0 14.0 -36.0 C30.0 -44.0 27.0 -68.0 17.0 -84.0 Q0.0 -94.0 -17.0 -84.0Z" fill="url(#gBlack)"/><circle cx="0.0" cy="-110.0" r="24" fill="url(#gSkin)"/><ellipse cx="-1.1" cy="-107.0" rx="3" ry="4" fill="#1a110a"/><ellipse cx="14.9" cy="-107.0" rx="3" ry="4" fill="#1a110a"/><circle cx="-0.1" cy="-108.5" r="1.2" fill="#ffffff"/><circle cx="15.9" cy="-108.5" r="1.2" fill="#ffffff"/><ellipse cx="-7.1" cy="-100.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><ellipse cx="20.9" cy="-100.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><path d="M-25.0 -115.0 Q-25.0 -145.0 0.0 -146.0 Q25.0 -145.0 25.0 -115.0 Q0.0 -111.0 -25.0 -115.0Z" fill="url(#gCap)"/><circle cx="0.0" cy="-146.0" r="3" fill="#2f2d2b"/><path d="M-10.0 -140.0 Q0.0 -143.0 10.0 -140.0" stroke="#504e4c" stroke-width="1.5" fill="none"/><ellipse cx="16.5" cy="-119.5" rx="16" ry="5.5" fill="#161515" stroke="#2f2d2b" stroke-width="1"/><g class="arm0" style="--lx:-6.1px;--ly:-3.5px"><line  x1="-18.0" y1="-75.0" x2="-24.0" y2="-50.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="-24.0" cy="-50.0" r="5.5" fill="#e8b48c"/></g><g class="arm1" style="--lx:-6.1px;--ly:-3.5px"><line  x1="18.0" y1="-75.0" x2="24.0" y2="-50.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="24.0" cy="-50.0" r="5.5" fill="#e8b48c"/></g></g><g class="wk" data-f="-x"><ellipse cx="0.0" cy="0.0" rx="30" ry="15" fill="url(#gShadow)"/><g class="arm0" style="--lx:6.1px;--ly:3.5px"><line  x1="-18.0" y1="-75.0" x2="-24.0" y2="-50.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="-24.0" cy="-50.0" r="5.5" fill="#e8b48c"/></g><g class="arm1" style="--lx:6.1px;--ly:3.5px"><line  x1="18.0" y1="-75.0" x2="24.0" y2="-50.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="24.0" cy="-50.0" r="5.5" fill="#e8b48c"/></g><g class="leg0" style="--lx:-6.9px;--ly:-4.0px"><line  x1="-6.9" y1="-36.0" x2="-6.9" y2="-2.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="-9.5" cy="0.5" rx="9" ry="5" fill="#1a120d"/></g><g class="leg1" style="--lx:-6.9px;--ly:-4.0px"><line  x1="6.9" y1="-44.0" x2="6.9" y2="-10.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="4.3" cy="-7.5" rx="9" ry="5" fill="#1a120d"/></g><path d="M-17.0 -84.0 C-27.0 -68.0 -30.0 -44.0 -14.0 -36.0 Q0.0 -31.0 14.0 -36.0 C30.0 -44.0 27.0 -68.0 17.0 -84.0 Q0.0 -94.0 -17.0 -84.0Z" fill="url(#gBlack)"/><circle cx="0.0" cy="-110.0" r="24" fill="url(#gSkin)"/><path d="M-24.0 -110.0 A24 24 0 1 1 24.0 -110.0 A24 24 0 0 1 -24.0 -110.0Z" fill="url(#gHair)"/><ellipse cx="-16.5" cy="-124.5" rx="16" ry="5.5" fill="#161515" stroke="#2f2d2b" stroke-width="1"/><path d="M-25.0 -115.0 Q-25.0 -145.0 0.0 -146.0 Q25.0 -145.0 25.0 -115.0 Q0.0 -111.0 -25.0 -115.0Z" fill="url(#gCap)"/><circle cx="0.0" cy="-146.0" r="3" fill="#2f2d2b"/><path d="M-10.0 -140.0 Q0.0 -143.0 10.0 -140.0" stroke="#504e4c" stroke-width="1.5" fill="none"/></g><g class="wk" data-f="+y"><ellipse cx="0.0" cy="0.0" rx="30" ry="15" fill="url(#gShadow)"/><g class="leg0" style="--lx:-6.9px;--ly:4.0px"><line  x1="6.9" y1="-36.0" x2="6.9" y2="-2.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="4.3" cy="3.5" rx="9" ry="5" fill="#1a120d"/></g><g class="leg1" style="--lx:-6.9px;--ly:4.0px"><line  x1="-6.9" y1="-44.0" x2="-6.9" y2="-10.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="-9.5" cy="-4.5" rx="9" ry="5" fill="#1a120d"/></g><path d="M-17.0 -84.0 C-27.0 -68.0 -30.0 -44.0 -14.0 -36.0 Q0.0 -31.0 14.0 -36.0 C30.0 -44.0 27.0 -68.0 17.0 -84.0 Q0.0 -94.0 -17.0 -84.0Z" fill="url(#gBlack)"/><circle cx="0.0" cy="-110.0" r="24" fill="url(#gSkin)"/><ellipse cx="-14.9" cy="-107.0" rx="3" ry="4" fill="#1a110a"/><ellipse cx="1.1" cy="-107.0" rx="3" ry="4" fill="#1a110a"/><circle cx="-13.9" cy="-108.5" r="1.2" fill="#ffffff"/><circle cx="2.1" cy="-108.5" r="1.2" fill="#ffffff"/><ellipse cx="-20.9" cy="-100.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><ellipse cx="7.1" cy="-100.0" rx="4" ry="2.4" fill="#f08a7a" opacity=".5"/><path d="M-25.0 -115.0 Q-25.0 -145.0 0.0 -146.0 Q25.0 -145.0 25.0 -115.0 Q0.0 -111.0 -25.0 -115.0Z" fill="url(#gCap)"/><circle cx="0.0" cy="-146.0" r="3" fill="#2f2d2b"/><path d="M-10.0 -140.0 Q0.0 -143.0 10.0 -140.0" stroke="#504e4c" stroke-width="1.5" fill="none"/><ellipse cx="-16.5" cy="-119.5" rx="16" ry="5.5" fill="#161515" stroke="#2f2d2b" stroke-width="1"/><g class="arm0" style="--lx:6.1px;--ly:-3.5px"><line  x1="-18.0" y1="-75.0" x2="-24.0" y2="-50.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="-24.0" cy="-50.0" r="5.5" fill="#e8b48c"/></g><g class="arm1" style="--lx:6.1px;--ly:-3.5px"><line  x1="18.0" y1="-75.0" x2="24.0" y2="-50.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="24.0" cy="-50.0" r="5.5" fill="#e8b48c"/></g></g><g class="wk" data-f="-y"><ellipse cx="0.0" cy="0.0" rx="30" ry="15" fill="url(#gShadow)"/><g class="arm0" style="--lx:-6.1px;--ly:3.5px"><line  x1="-18.0" y1="-75.0" x2="-24.0" y2="-50.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="-24.0" cy="-50.0" r="5.5" fill="#e8b48c"/></g><g class="arm1" style="--lx:-6.1px;--ly:3.5px"><line  x1="18.0" y1="-75.0" x2="24.0" y2="-50.0" stroke="#232120" stroke-width="10" stroke-linecap="round"/><circle cx="24.0" cy="-50.0" r="5.5" fill="#e8b48c"/></g><g class="leg0" style="--lx:6.9px;--ly:-4.0px"><line  x1="-6.9" y1="-44.0" x2="-6.9" y2="-10.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="-4.3" cy="-7.5" rx="9" ry="5" fill="#1a120d"/></g><g class="leg1" style="--lx:6.9px;--ly:-4.0px"><line  x1="6.9" y1="-36.0" x2="6.9" y2="-2.0" stroke="#3a2c24" stroke-width="14" stroke-linecap="round"/><ellipse cx="9.5" cy="0.5" rx="9" ry="5" fill="#1a120d"/></g><path d="M-17.0 -84.0 C-27.0 -68.0 -30.0 -44.0 -14.0 -36.0 Q0.0 -31.0 14.0 -36.0 C30.0 -44.0 27.0 -68.0 17.0 -84.0 Q0.0 -94.0 -17.0 -84.0Z" fill="url(#gBlack)"/><circle cx="0.0" cy="-110.0" r="24" fill="url(#gSkin)"/><path d="M-24.0 -110.0 A24 24 0 1 1 24.0 -110.0 A24 24 0 0 1 -24.0 -110.0Z" fill="url(#gHair)"/><ellipse cx="16.5" cy="-124.5" rx="16" ry="5.5" fill="#161515" stroke="#2f2d2b" stroke-width="1"/><path d="M-25.0 -115.0 Q-25.0 -145.0 0.0 -146.0 Q25.0 -145.0 25.0 -115.0 Q0.0 -111.0 -25.0 -115.0Z" fill="url(#gCap)"/><circle cx="0.0" cy="-146.0" r="3" fill="#2f2d2b"/><path d="M-10.0 -140.0 Q0.0 -143.0 10.0 -140.0" stroke="#504e4c" stroke-width="1.5" fill="none"/></g></g>
+</svg>
+
+      <div class="intro-cap" id="introCap">
+        <h1>Ricky Bagus</h1>
+        <p>Saya syuting, mengedit, menjalankan siaran live, dan mengurus audio. Enam tahun full-time di Astronacci.</p>
+        <div class="roles"><span class="r1">Videografer</span><span class="r2">Editor</span><span class="r3">Live streaming</span><span class="r4">Audio engineer</span></div>
+        <span class="hint">Scroll sekali untuk pindah ke area berikutnya</span>
+      </div>
+
+      <article class="desk-card" data-i="1" aria-label="Meja 1, videografer">
+        <h2>Videografer</h2>
+        <p>Syuting podcast multi-kamera, konten YouTube, talkshow, dan event. Full-time di Astronacci sejak 2020, freelance sejak 2016.</p>
+        <ul class="work-list">
+          <li><a href="https://youtu.be/mANMtfCn0OE" target="_blank" rel="noopener"><span>Siapa yang Nyuruh Sadap Presiden??</span><span>4,2 jt views</span></a></li>
+        </ul>
+        <div class="more-row" data-page="videografer"></div>
+      </article>
+
+      <article class="desk-card" data-i="2" aria-label="Meja 2, editor">
+        <h2>Editor</h2>
+        <p>Saya mengedit video YouTube 25 sampai 30 menit untuk Astronacci, termasuk seri Trader Tersesat bersama Tretan Muslim dan Coki Pardede.</p>
+        <ul class="work-list">
+          <li><a href="https://youtu.be/FntmLW2Ufjk" target="_blank" rel="noopener"><span>Tradepreneur Ep35</span><span>1,7 jt views</span></a></li>
+          <li><a href="https://youtu.be/Gv-aLADdTJI" target="_blank" rel="noopener"><span>Trader Tersesat Ep7</span><span>931 rb views</span></a></li>
+        </ul>
+        <div class="tags"><span>Premiere Pro</span><span>After Effects</span><span>Camtasia</span><span>PluralEyes</span></div>
+        <div class="more-row" data-page="editor"></div>
+      </article>
+
+      <article class="desk-card" data-i="3" aria-label="Meja 3, live streaming">
+        <h2>Live streaming</h2>
+        <p>Saya menjalankan siaran live analisis market di channel Astronacci beberapa kali seminggu, juga debat terbuka dan event perusahaan.</p>
+        <ul class="work-list">
+          <li><a href="https://www.youtube.com/watch?v=W4_Ca6VN1CQ" target="_blank" rel="noopener"><span>Debat Terbuka, live 1 jam 40 menit</span><span>445 rb views</span></a></li>
+          <li><a href="#event"><span>Event perusahaan: runner &amp; bagan jalur livestream</span><span>Studi kasus</span></a></li>
+        </ul>
+        <div class="tags"><span>vMix</span><span>Prism Live</span><span>Zoom</span><span>Multi-cam</span></div>
+        <div class="more-row" data-page="live"></div>
+      </article>
+
+      <article class="desk-card" data-i="4" aria-label="Meja 4, audio engineer">
+        <h2>Audio engineer</h2>
+        <p>Tiga sisi pekerjaan audio. Tekan SOLO untuk membuka salah satunya.</p>
+        <div class="strips" id="strips"></div>
+        <div class="solo-out" id="soloOut" aria-live="polite"></div>
+        <div class="more-row" data-page="audio"></div>
+      </article>
+
+      <nav class="desk-nav" id="deskNav" aria-label="Pindah meja"></nav>
+    </div>
+  </section>
+
+  <section aria-label="Angka singkat" style="padding:72px 0 0">
+    <div class="wrap">
+      <div class="kpis">
+        <div class="kpi"><span class="k">Views tertinggi (syuting)</span><span class="n">4,2 jt</span><span class="sub">Siapa yang Nyuruh Sadap Presiden??</span></div>
+        <div class="kpi"><span class="k">Subscriber channel</span><span class="n">1,27 jt</span><span class="sub">YouTube Astronacci</span></div>
+        <div class="kpi"><span class="k">Di Astronacci</span><span class="n">6 thn</span><span class="sub">Full-time sejak 2020</span></div>
+        <div class="kpi"><span class="k">Freelance sejak</span><span class="n">2016</span><span class="sub">Yogyakarta &amp; Jakarta</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE KARYA -->
+  <section id="karya">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Karya di timeline</h2>
+        <p class="muted">Klik klip untuk melihat detailnya. Klip yang lebih panjang punya views lebih banyak. Geser timeline ke samping untuk melihat semuanya.</p>
+      </div>
+      <div class="nle">
+        <div class="viewer">
+          <div class="v-screen"><canvas id="vcv" width="800" height="450"></canvas><div class="v-title" id="vTitle"></div></div>
+          <div class="v-info">
+            <dl>
+              <dt>Tanggal</dt><dd id="vDate"></dd>
+              <dt>Jenis</dt><dd id="vType"></dd>
+              <dt>Peran saya</dt><dd id="vRole"></dd>
+              <dt>Views</dt><dd id="vViews" class="mono"></dd>
+            </dl>
+            <div class="v-nav">
+              <button class="btn sq" id="prevClip" type="button" aria-label="Klip sebelumnya"><i class="ico-l" aria-hidden="true"></i></button>
+              <button class="btn sq" id="nextClip" type="button" aria-label="Klip berikutnya"><i class="ico-r" aria-hidden="true" style="margin:0"></i></button>
+              <a class="btn primary" id="vLink" href="#" target="_blank" rel="noopener">Tonton di YouTube</a>
+            </div>
+          </div>
+        </div>
+        <div class="tracks" id="tracks">
+          <div class="tracks-inner" id="tracksInner">
+            <div class="playhead" id="playhead"></div>
+          </div>
+        </div>
+        <div class="legend"><span><i style="background:var(--clip)"></i>V1 · Video YouTube</span><span><i style="background:var(--pgm)"></i>V2 · Live streaming</span><span>Arsip lengkap: <a href="https://www.youtube.com/@astronacciinternational" target="_blank" rel="noopener">YouTube Astronacci</a></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDI KASUS -->
+  <section id="event">
+    <div class="wrap">
+      <div class="sec-head"><h2>Di balik event live perusahaan</h2></div>
+      <div class="case">
+        <div class="card">
+          <h3>Celebrating God’s Faithfulness in Astronacci’s Journey</h3>
+          <p class="muted" style="margin-top:6px">Siaran langsung hampir 3 jam, 2026</p>
+          <p style="margin-top:18px">Saya bertugas sebagai runner dan menyusun bagan jalur livestream acara ini. Bagan itu jadi acuan bersama antara tim internal Astronacci dan vendor produksi dari luar, dari kamera di venue sampai sinyal tayang di YouTube.</p>
+          <ul class="facts">
+            <li><span>Peran</span><span>Runner, perencana jalur livestream</span></li>
+            <li><span>Tim</span><span>Tim video Astronacci + vendor luar</span></li>
+            <li><span>Tayang</span><span><a href="https://youtu.be/NdqPGW7Vfd4" target="_blank" rel="noopener">YouTube Astronacci</a></span></li>
+          </ul>
+        </div>
+        <div class="drop">
+          <strong>Bagan jalur livestream</strong>
+          <span class="muted">Tempat untuk bagan asli yang saya buat</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section id="foto" style="padding-top:40px">
+    <div class="gal-head sec-head" style="margin-bottom:24px"><h2>Di balik layar</h2><p class="muted">Geser untuk melihat foto saat syuting, live, dan event.</p></div>
+    <div class="gallery" id="gallery" tabindex="0" aria-label="Galeri foto, bisa digeser">
+      <div class="shot"><strong>Setup studio</strong><span>Foto menyusul</span></div>
+      <div class="shot"><strong>Meja switcher saat live</strong><span>Foto menyusul</span></div>
+      <div class="shot"><strong>Event perusahaan</strong><span>Foto menyusul</span></div>
+      <div class="shot"><strong>Syuting lapangan</strong><span>Foto menyusul</span></div>
+      <div class="shot"><strong>Proses editing</strong><span>Foto menyusul</span></div>
+      <div class="shot"><strong>Bersama tim</strong><span>Foto menyusul</span></div>
+    </div>
+  </section>
+
+  <!-- PENGALAMAN -->
+  <section id="pengalaman">
+    <div class="wrap exp">
+      <div class="stick">
+        <h2>Pengalaman</h2>
+        <p class="muted" style="margin-top:16px;max-width:34ch">Lulus Broadcasting STMM MMTC Yogyakarta tahun 2018. Sekarang full-time di Astronacci, channel edukasi market dengan 1,27 juta subscriber.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="when">2020 – sekarang</span><div><h3>Videographer, Astronacci International<span class="now">Saat ini</span></h3><p>Full-time di Jakarta Utara. Syuting dan edit video YouTube, operator live streaming analisis market, video produk, dan event besar perusahaan.</p></div></li>
+        <li><span class="when">2019 – 2020</span><div><h3>Content Designer, Merapi Online Corp</h3><p>Yogyakarta. Desain konten visual, foto, dan audio.</p></div></li>
+        <li><span class="when">2016 – sekarang</span><div><h3>Videographer Freelance</h3><p>Yogyakarta dan Jakarta. Proyek video untuk klien perorangan dan bisnis.</p></div></li>
+        <li><span class="when">2014 – 2018</span><div><h3>S.Tr.I.Kom Broadcasting, STMM MMTC</h3><p>Yogyakarta. Aktif di BEM, musik, dan event organizer kampus.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="alat">
+    <div class="wrap">
+      <div class="sec-head"><h2>Alat kerja</h2></div>
+      <div class="toolgrid">
+        <div><h3>Edit &amp; motion</h3><ul><li>Premiere Pro</li><li>After Effects</li><li>Camtasia</li><li>PluralEyes</li></ul></div>
+        <div><h3>Live streaming</h3><ul><li>vMix</li><li>Prism Live</li><li>Zoom</li><li>Multi-cam</li></ul></div>
+        <div><h3>Audio &amp; musik</h3><ul><li>FL Studio</li><li>Mixing live</li><li>Mixing pasca-produksi</li></ul></div>
+        <div><h3>Foto &amp; desain</h3><ul><li>Photoshop</li><li>Lightroom</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAK -->
+  <section id="kontak" class="contact">
+    <div class="wrap">
+      <h2>Kontak</h2>
+      <div class="contact-grid">
+        <div class="c-card">
+          <span class="k">LinkedIn</span>
+          <span class="v">linkedin.com/in/ricky-bagus-046925143</span>
+          <div class="c-row">
+            <a class="btn primary" href="https://www.linkedin.com/in/ricky-bagus-046925143" target="_blank" rel="noopener">Buka profil</a>
+            <button class="btn" type="button" data-copy="https://www.linkedin.com/in/ricky-bagus-046925143">Salin link</button>
+          </div>
+        </div>
+        <div class="c-card"><span class="k">Email</span><span class="v todo">Tambahkan email</span></div>
+        <div class="c-card"><span class="k">WhatsApp</span><span class="v todo">Tambahkan nomor</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">© 2026 Ricky Bagus · Jakarta</div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+
+<script>
+(function(){
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pad = n => String(n).padStart(2,'0');
+function rnd(s){ let x = Math.sin(s)*10000; return x - Math.floor(x); }
+const wib=()=>new Date(Date.now()+(7*60+new Date().getTimezoneOffset())*60000);
+
+/* ---------- halaman lengkap per profesi (isi URL saat halamannya sudah ada) ---------- */
+const PAGES={
+  videografer:'',
+  editor:'editor/index.html',
+  live:'',
+  audio:''
+};
+const LABEL={videografer:'videografer',editor:'editor',live:'live streaming',audio:'audio engineer'};
+document.querySelectorAll('.more-row').forEach(el=>{ const k=el.dataset.page, u=PAGES[k];
+  el.innerHTML = u ? `<a class="btn primary" href="${u}">Lihat selengkapnya: portofolio ${LABEL[k]}<i class="ico-r" aria-hidden="true"></i></a>`
+                   : `<span class="soon">Halaman lengkap ${LABEL[k]} segera hadir.</span>`; });
+
+/* ---------- diorama: karakter berjalan antar area, sekali scroll = pindah ---------- */
+const studio=document.querySelector('.studio'), stage=studio.querySelector('.stage'), dio=document.getElementById('dio');
+const walkerG=document.getElementById('walker'), sprites=[...walkerG.querySelectorAll('.wk')];
+const workers=[...dio.querySelectorAll('.worker')];
+const cards=[...document.querySelectorAll('.desk-card')], introCap=document.getElementById('introCap');
+const OX=700, OY=262, Cc=Math.cos(Math.PI/6);
+const scr=(x,y)=>[OX+(x-y)*Cc, OY+(x+y)*.5];
+// titik berdiri tiap posisi (koordinat lantai) & pusat fokus kamera
+const SPOT=[[440,440],[368,606],[200,225],[530,330],[560,470]];
+const FOCUS=[null,[210,610],[200,200],[600,210],[600,600]];
+const ROUTE={'0-1':[[440,440],[440,606],[368,606]],'1-2':[[368,606],[440,606],[440,380],[350,380],[350,225],[200,225]],
+             '2-3':[[200,225],[340,225],[340,330],[530,330]],'3-4':[[530,330],[440,330],[440,470],[560,470]]};
+function path(a,b){ if(a===b) return [SPOT[a]]; const out=[]; const step=b>a?1:-1;
+  for(let k=a;k!==b;k+=step){ let seg=step>0?ROUTE[k+'-'+(k+1)]:[...ROUTE[(k-1)+'-'+k]].reverse(); out.push(...(out.length?seg.slice(1):seg)); } return out; }
+const NAMES=['Studio','Kamera','Edit','Live','Audio'];
+let idx=0, busy=false, pos=[...SPOT[0]], facing='+y';
+function face(f){ facing=f; sprites.forEach(s=>s.classList.toggle('on',s.dataset.f===f)); }
+function placeWalker(x,y){ const [sx,sy]=scr(x,y); walkerG.setAttribute('transform',`translate(${sx.toFixed(1)} ${sy.toFixed(1)})`); }
+// kamera (viewBox) per posisi
+function viewFor(k){
+  const W=stage.clientWidth, H=stage.clientHeight, wide=W>900;
+  if(k===0){ const vw=wide?1450:1300, vh=vw*H/W; return [700-vw/2, 550-vh*(wide?.56:.64), vw, vh]; }
+  let [cx,cy]=scr(...FOCUS[k]); cy-=70; const vw=wide?1000:700; const vh=vw*H/W;
+  return [cx-vw*(wide?.34:.5), cy-vh*(wide?.5:.27), vw, vh];
+}
+let vb=null, vbFrom=null, vbTo=null, vbT0=0, vbDur=900;
+function setVB(v){ vb=v; dio.setAttribute('viewBox',v.map(n=>n.toFixed(1)).join(' ')); }
+function camTo(k,dur){ vbFrom=vb?[...vb]:viewFor(k); vbTo=viewFor(k); vbT0=performance.now(); vbDur=dur; }
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function ui(k){
+  introCap.style.opacity=k===0?'1':'0'; veil.style.opacity=k===0?'1':'0';
+  cards.forEach(c=>c.classList.toggle('show',+c.dataset.i===k));
+  navBtns.forEach((n,j)=>n.setAttribute('aria-current',String(j===k)));
+  dots.forEach((d,j)=>d.classList.toggle('on',j===k));
+}
+function showWorker(k){ workers.forEach(w=>w.classList.toggle('on',+w.dataset.st===k)); walkerG.style.display=(k>=1?'none':''); }
+function go(k){
+  if(busy||k===idx||k<0||k>4) return;
+  const pts=path(idx,k); busy=true; idx=k; ui(-1);
+  showWorker(-1); walkerG.style.display='';
+  const segs=[]; let total=0;
+  for(let i=1;i<pts.length;i++){ const d=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]); segs.push([pts[i-1],pts[i],d]); total+=d; }
+  const speed=reduce?1e9:420; const dur=Math.max(reduce?0:500,total/speed*1000);
+  camTo(k,Math.max(700,dur)); walkerG.classList.add('walking');
+  const t0=performance.now();
+  (function anim(now){
+    const t=Math.min(1,(now-t0)/(dur||1)); let dist=ease(t)*total;
+    for(const [a,b,d] of segs){ if(dist<=d||d===segs[segs.length-1][2]&&dist>=d){ const r=d?Math.min(1,dist/d):1; const x=a[0]+(b[0]-a[0])*r, y=a[1]+(b[1]-a[1])*r;
+        const dx=b[0]-a[0], dy=b[1]-a[1]; face(Math.abs(dx)>Math.abs(dy)?(dx>0?'+x':'-x'):(dy>0?'+y':'-y')); placeWalker(x,y); break; } dist-=d; }
+    if(t<1) requestAnimationFrame(anim);
+    else { walkerG.classList.remove('walking'); placeWalker(...SPOT[k]); if(k===0) face('+y'); showWorker(k); ui(k); setTimeout(()=>{busy=false;},250); }
+  })(t0);
+}
+function camLoop(now){ if(vbTo){ const t=Math.min(1,(now-vbT0)/vbDur), e=ease(t); setVB(vbFrom.map((v,i)=>v+(vbTo[i]-v)*e)); if(t>=1) vbTo=null; } requestAnimationFrame(camLoop); }
+// navigasi
+const deskNav=document.getElementById('deskNav');
+const navBtns=NAMES.map((name,k)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=name; b.setAttribute('aria-current',String(k===0));
+  b.addEventListener('click',()=>{ alignStudio(); go(k); }); deskNav.appendChild(b); return b; });
+const veil=document.createElement('div'); veil.className='veil'; stage.insertBefore(veil,introCap);
+const dotWrap=document.createElement('div'); dotWrap.className='dots'; dotWrap.setAttribute('aria-hidden','true');
+const dots=NAMES.map(()=>{ const i=document.createElement('i'); dotWrap.appendChild(i); return i; }); stage.appendChild(dotWrap);
+function alignStudio(){ const r=studio.getBoundingClientRect(); if(Math.abs(r.top)>2) scrollTo({top:scrollY+r.top,behavior:reduce?'auto':'smooth'}); }
+function inStudio(){ const r=studio.getBoundingClientRect(); return Math.abs(r.top)<60; }
+// sekali scroll / swipe = satu langkah
+let lastWheel=0, lastStep=0;
+addEventListener('wheel',e=>{
+  if(!inStudio()) return;
+  const dir=e.deltaY>0?1:e.deltaY<0?-1:0; if(!dir) return;
+  const now=performance.now(), gap=now-lastWheel; lastWheel=now;
+  const target=idx+dir;
+  if(target<0||target>4){ if(busy) e.preventDefault(); return; }   // keluar dari studio: scroll biasa
+  e.preventDefault();
+  if(busy) return;
+  if(now-lastStep<700 && gap<180) return;                          // sisa momentum trackpad
+  lastStep=now; alignStudio(); go(target);
+},{passive:false});
+let ty=null;
+studio.addEventListener('touchstart',e=>{ ty=e.touches[0].clientY; },{passive:true});
+studio.addEventListener('touchmove',e=>{ if(ty===null||!inStudio()) return; const dy=ty-e.touches[0].clientY; const dir=dy>0?1:-1; const t=idx+dir; if(t>=0&&t<=4) e.preventDefault(); },{passive:false});
+studio.addEventListener('touchend',e=>{ if(ty===null) return; const dy=ty-(e.changedTouches[0]||{clientY:ty}).clientY; ty=null; if(!inStudio()||Math.abs(dy)<40) return; const t=idx+(dy>0?1:-1); if(t>=0&&t<=4){ alignStudio(); go(t); } });
+addEventListener('keydown',e=>{ if(!inStudio()||e.target.closest('input,textarea')) return;
+  const down=['ArrowDown','PageDown',' '].includes(e.key), up=['ArrowUp','PageUp'].includes(e.key);
+  if(!down&&!up) return; const t=idx+(down?1:-1); if(t<0||t>4) return; e.preventDefault(); go(t); });
+new IntersectionObserver(es=>studio.classList.toggle('paused',!es[0].isIntersecting)).observe(studio);
+addEventListener('resize',()=>{ vbTo=null; setVB(viewFor(idx)); });
+// awal
+const HASH={kamera:1,videografer:1,edit:2,editor:2,live:3,audio:4};
+const startK=HASH[(location.hash||'').slice(1).toLowerCase()]||0;
+idx=startK; face(startK?'-y':'+y'); placeWalker(...SPOT[startK]); showWorker(startK); setVB(viewFor(startK)); ui(startK);
+if(startK){ const r=studio.getBoundingClientRect(); if(Math.abs(r.top)>2) scrollTo(0,scrollY+r.top); }
+addEventListener('hashchange',()=>{ const k=HASH[(location.hash||'').slice(1).toLowerCase()]; if(k!==undefined){ alignStudio(); go(k); } }); requestAnimationFrame(camLoop);
+
+/* jam di ilustrasi meja live */
+const tickSvg=()=>{ const d=wib(); document.querySelectorAll('.svgClock').forEach(c=>c.textContent=pad(d.getHours())+':'+pad(d.getMinutes())); }; tickSvg(); setInterval(tickSvg,15000);
+
+/* audio: channel strip + SOLO */
+const chans=[
+  {n:'LIVE',lvl:.72,t:'Mixing audio live',d:'Mengatur mic dan suara saat live streaming dan event supaya jernih dan seimbang sampai ke penonton.'},
+  {n:'POST',lvl:.55,t:'Editing & mixing pasca-produksi',d:'Merapikan suara setelah syuting: membersihkan noise, menyamakan level dialog, dan memadukan musik.'},
+  {n:'MUSIK',lvl:.62,t:'Musik & sound design',d:'Membuat musik dan efek suara untuk video, salah satunya dengan FL Studio.'}
+];
+const strips=document.getElementById('strips'), soloOut=document.getElementById('soloOut');
+const soloBtns=chans.map((c,i)=>{ const el=document.createElement('div'); el.className='strip';
+  el.innerHTML=`<div class="fader" aria-hidden="true"><i style="bottom:${c.lvl*58}px"></i></div><b>${c.n}</b>`;
+  const b=document.createElement('button'); b.type='button'; b.className='solo'; b.textContent='SOLO'; b.setAttribute('aria-pressed','false'); b.setAttribute('aria-label','Solo '+c.t);
+  b.addEventListener('click',()=>solo(i)); el.appendChild(b); strips.appendChild(el); return {b,el}; });
+function solo(i){ soloBtns.forEach((s,j)=>{ s.b.setAttribute('aria-pressed',String(j===i)); s.el.querySelector('i').style.bottom=(j===i?62:chans[j].lvl*58*.5)+'px'; });
+  soloOut.innerHTML=`<strong>${chans[i].t}</strong>${chans[i].d}`; }
+solo(0);
+
+/* ---------- NLE timeline ---------- */
+const clips=[
+  {k:'v',d:'2022',t:'Tradepreneur Ep35: Rugi Lebih 20 Triliun',v:1700000,r:'Editor',u:'https://youtu.be/FntmLW2Ufjk'},
+  {k:'v',d:'2022',t:'Trader Tersesat Ep7: Tretan Muslim Bangkrut',v:931000,r:'Editor',u:'https://youtu.be/Gv-aLADdTJI'},
+  {k:'v',d:'Mei 2026',t:'Warning!! Chaos 1998 Terulang??',v:446000,r:'',u:'https://www.youtube.com/watch?v=K8EKqxU-UwM'},
+  {k:'v',d:'Jun 2026',t:'Info A1 Urgent!! Indonesia Diserang',v:986000,r:'',u:'https://www.youtube.com/watch?v=zc7vQz_MHxw'},
+  {k:'v',d:'Sep 2026',t:'Kita Ditipu, Harta Dirampok 30 Tahun',v:77000,r:'',u:'https://www.youtube.com/watch?v=rUe-ntcyD1Q'},
+  {k:'v',d:'Sep 2026',t:'Update Gold Bisa Lanjut Naik??',v:149000,r:'',u:'https://www.youtube.com/watch?v=Tyi-Suo6vr4'},
+  {k:'v',d:'Okt 2026',t:'Bahaya Nasional!! Kita Sedang Perang Cognitive',v:207000,r:'',u:'https://www.youtube.com/watch?v=uyX3hfIuB6I'},
+  {k:'v',d:'Nov 2026',t:'Siapa yang Nyuruh Sadap Presiden??',v:4200000,r:'Videografer',u:'https://youtu.be/mANMtfCn0OE'},
+  {k:'l',d:'Sep 2026',t:'Celebrating God’s Faithfulness (event)',v:88000,r:'Runner & perencana jalur livestream',u:'https://youtu.be/NdqPGW7Vfd4'},
+  {k:'l',d:'Sep 2026',t:'China Borong Emas Besar-Besaran!',v:95000,r:'',u:'https://www.youtube.com/watch?v=fBw2x06Pzjg'},
+  {k:'l',d:'Sep 2026',t:'Bull Run Dimulai? Bitcoin & US Stocks',v:35000,r:'',u:'https://www.youtube.com/watch?v=GftF0QzZ6VY'},
+  {k:'l',d:'Okt 2026',t:'Debat Terbuka Bersama Buzzer Oposisi',v:445000,r:'',u:'https://www.youtube.com/watch?v=W4_Ca6VN1CQ'},
+  {k:'l',d:'Nov 2026',t:'CPI AS di Atas Ekspektasi',v:30000,r:'',u:'https://www.youtube.com/watch?v=gIciNZ3-OfI'},
+  {k:'l',d:'Nov 2026',t:'Portofolio Masih Merah? 7 Saham Berpotensi Naik',v:14000,r:'',u:'https://www.youtube.com/watch?v=Vu8-dm5iXkY'}
+];
+const fmtViews=v=> v>=1e6 ? (v/1e6).toFixed(1).replace('.',',')+' jt' : Math.round(v/1000)+' rb';
+const inner=document.getElementById('tracksInner'), head=document.getElementById('playhead'), tracksEl=document.getElementById('tracks');
+const ruler=document.createElement('div'); ruler.className='ruler'; inner.appendChild(ruler);
+const mk=(name,kind)=>{ const tr=document.createElement('div'); tr.className='track'; const n=document.createElement('span'); n.className='track-name'; n.textContent=name; tr.appendChild(n); inner.appendChild(tr);
+  return tr; };
+const tV=mk('V1','v'), tL=mk('V2','l');
+const order=[]; let x=0;
+clips.forEach((c,i)=>{ const b=document.createElement('button'); b.type='button'; b.className='clip'+(c.k==='l'?' live':'');
+  const w=Math.round(100+62*Math.log10(c.v/10000)); b.style.width=w+'px';
+  b.innerHTML=`<span class="ct"></span><span class="cm">${c.d} · ${fmtViews(c.v)}</span>`; b.querySelector('.ct').textContent=c.t;
+  b.setAttribute('aria-pressed','false'); b.addEventListener('click',()=>select(i));
+  (c.k==='v'?tV:tL).appendChild(b); c.el=b; order.push(i); });
+// ruler ticks under V1 start positions
+const years=['2022','2026'];
+ruler.innerHTML='<span style="width:220px">2022</span><span>2026</span>';
+const vcv=document.getElementById('vcv'), vctx=vcv.getContext('2d');
+const $=id=>document.getElementById(id);
+let cur=7;
+function select(i,scroll=true){
+  cur=i; const c=clips[i];
+  clips.forEach((o,j)=>o.el.setAttribute('aria-pressed',String(j===i)));
+  $('vTitle').textContent=c.t; $('vDate').textContent=c.d; $('vType').textContent=c.k==='l'?'Live streaming':'Video YouTube';
+  $('vRole').textContent=c.r||'Tim produksi Astronacci'; $('vViews').textContent=fmtViews(c.v)+' views'; $('vLink').href=c.u;
+  const r=c.el.getBoundingClientRect(), ir=inner.getBoundingClientRect(); head.style.left=(r.left-ir.left)+'px';
+  if(scroll){ const tr=tracksEl.getBoundingClientRect(); if(r.left<tr.left+70||r.right>tr.right) tracksEl.scrollBy({left:r.left-tr.left-90,behavior:reduce?'auto':'smooth'}); }
+  paintViewer(c,i);
+}
+function paintViewer(c,i){ const W=vcv.width,H=vcv.height; const base=c.k==='l'?[255,75,54]:[91,124,250];
+  const g=vctx.createLinearGradient(0,0,W,H); g.addColorStop(0,`rgba(${base},.55)`); g.addColorStop(1,'#090706'); vctx.fillStyle='#090706'; vctx.fillRect(0,0,W,H); vctx.fillStyle=g; vctx.fillRect(0,0,W,H);
+  for(let k=0;k<40;k++){ vctx.fillStyle=`rgba(255,255,255,${rnd(i*50+k)*.06})`; const y=rnd(k+i)*H; vctx.fillRect(0,y,W,1+rnd(k)*3); }
+  vctx.fillStyle='rgba(0,0,0,.35)'; vctx.fillRect(0,H*.55,W,H*.45);
+  vctx.font='500 18px Poppins, sans-serif'; vctx.fillStyle='rgba(255,255,255,.75)'; vctx.fillText((c.k==='l'?'● LIVE  ':'')+c.d.toUpperCase(),22,36);
+}
+$('prevClip').addEventListener('click',()=>select((cur-1+clips.length)%clips.length));
+$('nextClip').addEventListener('click',()=>select((cur+1)%clips.length));
+tracksEl.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){e.preventDefault();select((cur+1)%clips.length);clips[cur].el.focus();} if(e.key==='ArrowLeft'){e.preventDefault();select((cur-1+clips.length)%clips.length);clips[cur].el.focus();} });
+requestAnimationFrame(()=>select(7,false));
+addEventListener('resize',()=>select(cur,false));
+document.fonts && document.fonts.ready.then(()=>select(cur,false));
+
+/* ---------- gallery drag ---------- */
+const gal=$('gallery'); let down=false,sx=0,sl=0;
+gal.addEventListener('pointerdown',e=>{ if(e.pointerType!=='mouse') return; down=true; sx=e.clientX; sl=gal.scrollLeft; gal.classList.add('drag'); gal.setPointerCapture(e.pointerId); });
+gal.addEventListener('pointermove',e=>{ if(!down) return; gal.scrollLeft=sl-(e.clientX-sx); });
+['pointerup','pointercancel'].forEach(ev=>gal.addEventListener(ev,()=>{ down=false; gal.classList.remove('drag'); }));
+
+
+/* ---------- copy ---------- */
+const toast=$('toast');
+function bindCopy(root){ root.querySelectorAll('[data-copy]:not([data-bound])').forEach(b=>{ b.dataset.bound='1'; b.addEventListener('click',async()=>{
+  try{ await navigator.clipboard.writeText(b.dataset.copy); toast.textContent='Link LinkedIn disalin'; }
+  catch(e){ toast.textContent='Tidak bisa menyalin. Salin manual dari teks kontak.'; }
+  toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1800); }); }); }
+bindCopy(document);
+
+/* ---------- toggle track V1/V2 ---------- */
+[tV,tL].forEach(tr=>{ const n=tr.querySelector('.track-name'); const label=n.textContent; n.textContent='';
+  const b=document.createElement('button'); b.type='button'; b.setAttribute('aria-pressed','true');
+  b.textContent=label+(tr===tV?' Video':' Live'); b.setAttribute('aria-label',`Tampilkan atau sembunyikan track ${tr===tV?'video':'live'}`);
+  b.addEventListener('click',()=>{ const on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',String(on)); tr.classList.toggle('off',!on);
+    if(!on && tr.contains(clips[cur].el)){ const k=clips.findIndex(c=>!c.el.closest('.track.off')); if(k>=0) select(k); } });
+  n.appendChild(b); });
+
+/* ---------- nav tally (bagian yang sedang tayang) ---------- */
+const navLinks=[...document.querySelectorAll('.nav a[href^="#"]')];
+const secs=navLinks.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const spy=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) navLinks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)); }),{rootMargin:'-45% 0px -50% 0px'});
+secs.forEach(s=>spy.observe(s));
+
+
+})();
+</script>
+</body>
+</html>
